@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/style2.css' %}" />
+</head>
+<body>
+    <main>
+        <div class="login-container">
+            <div class="login-col1">
+                <img src="{% static 'images/4.jpg' %}"  />
+            </div>
+            <div class="login-col2">
+                <div id="login">
+                <p class="s-text">Don't have an account ?
+                    <button  class="s-btn"><a href ="{% url 'register' %}">Sign In</a>
+                    </button> 
+                </p>
+                <div class="reg-section ">
+                    <h1>
+                        Welcome to ExploreConnect!
+                    </h1>
+                    <h2>
+                        Login to your account
+                    </h2>
+                </div>
+                <div class="form-container login-form">
+                    <form action="/login" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label>Email</label>
+                        <input type="email" name="email"  required>
+                        <label>Password</label>
+                        <input type="password" name="password" required>
+                        <center>
+                        <input type="submit" value="Login" class="lg-btn">
+                        </center>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </main>
+    <script>
+        function login(){
+            document.getElementById("register").style.display="none"
+             document.getElementById("login").style.display=""
+
+        }
+        function register(){
+            document.getElementById("register").style.display=""
+            document.getElementById("login").style.display="none"
+
+
+        }
+    </script>
+</body>
+</html>

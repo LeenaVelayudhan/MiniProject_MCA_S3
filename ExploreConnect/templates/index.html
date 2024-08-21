@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}" />
+  </head>
+  <body>
+    <section class="ex">
+      <div class="ex_container">
+        <div class="column_left">
+          <h1>Explore Beyond the Ordinary with ExploreConnect</h1>
+          <p>
+           Unlock the secrets of the world's most exciting destinations and adventures.
+          </p>
+          <button><a href="{%  url 'login'%}">Get Started </a>
+          </button>
+        </div>
+        <div class="column_right">
+             
+            <img src="{% static 'images/image.jpg' %}"  class="ex_image"/>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
+
+  
