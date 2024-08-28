@@ -13,7 +13,7 @@
 <main>
     <div class="login-container">
         <div class="login-col1">
-            <img src="{% static 'images/4.jpg' %}"  />
+            <img src="{% static 'images/3.jpg' %}"  />
         </div>
         <div class="login-col2">
             <div id="register">
@@ -31,7 +31,8 @@
                 </h2>
             </div>
             <div class="form-container">
-                <form action="/signup" method="post">
+                <form action="{% url 'signup' %}" method="post">
+                    {% csrf_token %}
                     <label>Name</label>
                     <input type="text" name="name" required>
                     <label>Email</label>
@@ -40,6 +41,16 @@
                     <input type="password" name="password" required>
                     <center><input type="submit" value="Register" class="lg-btn"></center>
                 </form>
+                <!-- <p>
+                    {% if user %}
+                        New user created with username {{user.username }}
+                    {% endif %}
+                </p>
+                <p style="background-color:red;">
+                    {% if error_message %}
+                         New user created with username {{error_message }}
+                    {% endif %}
+                </p> -->
             </div>
         </div>
      </div>
