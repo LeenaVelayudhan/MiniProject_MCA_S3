@@ -31,7 +31,7 @@
                 </h2>
             </div>
             <div class="form-container">
-                <form action="{% url 'signup' %}" method="post">
+                <form action="{% url 'register' %}" method="post">
                     {% csrf_token %}
                     <label>Name</label>
                     <input type="text" name="name" required>
@@ -41,16 +41,15 @@
                     <input type="password" name="password" required>
                     <center><input type="submit" value="Register" class="lg-btn"></center>
                 </form>
-                <!-- <p>
-                    {% if user %}
-                        New user created with username {{user.username }}
-                    {% endif %}
-                </p>
-                <p style="background-color:red;">
-                    {% if error_message %}
-                         New user created with username {{error_message }}
-                    {% endif %}
-                </p> -->
+                {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+                
             </div>
         </div>
      </div>

@@ -30,7 +30,7 @@
                     </h2>
                 </div>
                 <div class="form-container login-form">
-                    <form action="/login" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label>Email</label>
                         <input type="email" name="email"  required>

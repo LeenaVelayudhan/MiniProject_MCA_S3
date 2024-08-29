@@ -19,7 +19,7 @@ from .import views
 
 urlpatterns = [
     path('login/',views.login,name='login'),
-    path('register/',views.register,name='signup'),
-    path('hello/',views.hello,name='hello'),
+    path('register/',views.register,name='register'),
+    path('index/',views.index,name='index'),
 ]
 

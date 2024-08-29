@@ -12,3 +12,5 @@ class Destination(models.Model):
     accimgs=models.ImageField()
     dining=models.TextField()
     diningimgs=models.ImageField()
+def __str__(self):
+        return self.name
