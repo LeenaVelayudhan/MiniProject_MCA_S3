@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExploreConnect - Home</title>
+    <link rel="stylesheet" href="{% static 'css/style3.css' %}" />
+    
+</head>
+<body>
+    <!-- Upper Section: Navbar -->
+    <div class="navbar">
+        <div class="logo">ExploreConnect</div>
+        <ul>
+            <li><a href="{% url 'profile' %}">User Profile</a></li>
+            <li><a href="{% url 'destinations' %}">Destinations</a></li>
+            <li><a href="{% url 'language_translation' %}">Language Translation</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Lower Section: Content -->
+    <div class="content">
+        <h1>Welcome to ExploreConnect!</h1>
+        <p>Your gateway to discovering new places, languages, and cultures. Start your journey now!</p>
+        
+        <!-- Call-to-action buttons -->
+        <div class="cta-buttons">
+            <a href="{% url 'explore' %}">Explore Now</a>
+            <a href="{% url 'language_translation' %}">Translate a Language</a>
+        </div>
+    </div>
+
+    <!-- Featured Destinations Section -->
+    <div class="featured-destinations">
+        <h2>Featured Destinations</h2>
+        <div class="destination-grid">
+            <div class="destination-card">
+                <img src="{% static 'images/destination1.jpg' %}" alt="Destination 1">
+                <h3>Paris, France</h3>
+                <p>The city of lights, romance, and iconic landmarks.</p>
+            </div>
+            <div class="destination-card">
+                <img src="{% static 'images/destination2.jpg' %}" alt="Destination 2">
+                <h3>Kyoto, Japan</h3>
+                <p>Explore traditional temples, gardens, and stunning autumn leaves.</p>
+            </div>
+            <div class="destination-card">
+                <img src="{% static 'images/destination3.jpg' %}" alt="Destination 3">
+                <h3>New York, USA</h3>
+                <p>The city that never sleeps with endless attractions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Activity Section -->
+    <div class="user-activity">
+        <h2>Your Recent Activity</h2>
+        <ul>
+            <li>Visited: Paris</li>
+            <li>Translated: English to French</li>
+            <li>Updated Profile</li>
+        </ul>
+    </div>
+
+    <!-- Recommendations Section -->
+    <div class="recommendations">
+        <h2>Recommended for You</h2>
+        <div class="recommendation-cards">
+            <div class="recommendation-card">
+                <h3>Rome, Italy</h3>
+                <p>Discover ancient history and breathtaking architecture.</p>
+            </div>
+            <div class="recommendation-card">
+                <h3>Barcelona, Spain</h3>
+                <p>Experience vibrant culture, art, and seaside beauty.</p>
+            </div>
+            <div class="recommendation-card">
+                <h3>Bangkok, Thailand</h3>
+                <p>Explore temples, street food, and bustling markets.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 ExploreConnect. All rights reserved.
+    </footer>
+</body>
+</html>

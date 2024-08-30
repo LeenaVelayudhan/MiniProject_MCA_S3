@@ -19,30 +19,60 @@
                 <p class="s-text">Don't have an account ?
                     <a href="{% url 'register' %}">
                         <button class="s-btn">Sign In</button>
-                      </a>
+                    </a>
                 </p>
-                <div class="reg-section ">
-                    <h1>
-                        Welcome to ExploreConnect!
-                    </h1>
-                    <h2>
-                        Login to your account
-                    </h2>
+                <div class="reg-section">
+                    <h1>Welcome to ExploreConnect!</h1>
+                    <h2>Login to your account</h2>
                 </div>
                 <div class="form-container login-form">
-                    <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'login' %}" method="post">
                         {% csrf_token %}
-                        <label>Email</label>
-                        <input type="email" name="email"  required>
+                        <label>Username</label>
+                        <input type="text" name="username" required>
                         <label>Password</label>
                         <input type="password" name="password" required>
                         <center><button class="lg-btn" type="submit">Login</button></center>
                     </form>
-                    
-                 </div>
+
+                    <!-- Toast message container -->
+                    <center><div id="toast-container" class="toast-container">
+                </div></center>
+                </div>
             </div>
         </div>
     </div>
     </main>
+
+    <!-- Inline JavaScript for toast messages -->
+    <script>
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+
+            // Style based on message type
+            if (type === 'success') {
+                toast.style.backgroundColor = '#4CAF50';  // Green for success
+            } else if (type === 'error') {
+                toast.style.backgroundColor = '#f44336';  // Red for error
+            }
+
+            toast.innerText = message;
+            toastContainer.appendChild(toast);
+
+            // Remove toast after fade out
+            setTimeout(() => {
+                toast.remove();
+            }, 4500);  // 4.5 seconds to match the fade-out animation
+        }
+
+        // Show toast messages for Django messages
+        {% if messages %}
+            {% for message in messages %}
+                showToast("{{ message }}", "{{ message.tags }}");
+            {% endfor %}
+        {% endif %}
+    </script>
 </body>
 </html>
