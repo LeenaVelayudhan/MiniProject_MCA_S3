@@ -5,19 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExploreConnect - Home</title>
-    <link rel="stylesheet" href="{% static 'css/style3.css' %}" />
-    
+    <link rel="stylesheet" href="{% static 'css/style3.css' %}">
 </head>
 <body>
     <!-- Upper Section: Navbar -->
     <div class="navbar">
         <div class="logo">ExploreConnect</div>
-        <ul>
-            <li><a href="{% url 'profile' %}">User Profile</a></li>
-            <li><a href="{% url 'destinations' %}">Destinations</a></li>
+        <ul class="nav-menu">
+            <li class="dropdown">
+                <a href="#">Destinations</a>
+                <ul class="dropdown-content">
+                    {% for continent in continents %}
+                    <li class="dropdown-submenu">
+                        <a href="#">{{ continent.continent }}</a>
+                        <ul class="dropdown-content">
+                            {% for country in countries %}
+                            {% if country.continent == continent.continent %}
+                            <li><a href="{% url 'destination_list' %}?country={{ country.country }}">{{ country.country }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
             <li><a href="{% url 'language_translation' %}">Language Translation</a></li>
+            <li><a href="{% url 'profile' %}">User Profile</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
         </ul>
+        <div class="search-bar">
+            <input type="text" placeholder="Search places...">
+            <button>Search</button>
+        </div>
     </div>
 
     <!-- Lower Section: Content -->
@@ -25,60 +44,18 @@
         <h1>Welcome to ExploreConnect!</h1>
         <p>Your gateway to discovering new places, languages, and cultures. Start your journey now!</p>
         
-        <!-- Call-to-action buttons -->
-        <div class="cta-buttons">
-            <a href="{% url 'explore' %}">Explore Now</a>
-            <a href="{% url 'language_translation' %}">Translate a Language</a>
-        </div>
-    </div>
-
-    <!-- Featured Destinations Section -->
-    <div class="featured-destinations">
-        <h2>Featured Destinations</h2>
-        <div class="destination-grid">
-            <div class="destination-card">
-                <img src="{% static 'images/destination1.jpg' %}" alt="Destination 1">
-                <h3>Paris, France</h3>
-                <p>The city of lights, romance, and iconic landmarks.</p>
-            </div>
-            <div class="destination-card">
-                <img src="{% static 'images/destination2.jpg' %}" alt="Destination 2">
-                <h3>Kyoto, Japan</h3>
-                <p>Explore traditional temples, gardens, and stunning autumn leaves.</p>
-            </div>
-            <div class="destination-card">
-                <img src="{% static 'images/destination3.jpg' %}" alt="Destination 3">
-                <h3>New York, USA</h3>
-                <p>The city that never sleeps with endless attractions.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- User Activity Section -->
-    <div class="user-activity">
-        <h2>Your Recent Activity</h2>
-        <ul>
-            <li>Visited: Paris</li>
-            <li>Translated: English to French</li>
-            <li>Updated Profile</li>
-        </ul>
-    </div>
-
-    <!-- Recommendations Section -->
-    <div class="recommendations">
-        <h2>Recommended for You</h2>
-        <div class="recommendation-cards">
-            <div class="recommendation-card">
-                <h3>Rome, Italy</h3>
-                <p>Discover ancient history and breathtaking architecture.</p>
-            </div>
-            <div class="recommendation-card">
-                <h3>Barcelona, Spain</h3>
-                <p>Experience vibrant culture, art, and seaside beauty.</p>
-            </div>
-            <div class="recommendation-card">
-                <h3>Bangkok, Thailand</h3>
-                <p>Explore temples, street food, and bustling markets.</p>
+        <!-- Carousel for Popular Destinations -->
+        <div class="carousel">
+            <div class="carousel-items">
+                {% for destination in destinations %}
+                <div class="carousel-item">
+                    <img src="{% static 'images/'|add:destination.details.images.0 %}" alt="{{ destination.name }}">
+                    <div class="carousel-caption">
+                        <h3>{{ destination.name }}</h3>
+                        <p>{{ destination.details.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -87,5 +64,8 @@
     <footer>
         &copy; 2024 ExploreConnect. All rights reserved.
     </footer>
+
+    <!-- Optional: JavaScript for carousel -->
+    <script src="{% static 'js/carousel.js' %}"></script>
 </body>
 </html>
