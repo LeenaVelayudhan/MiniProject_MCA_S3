@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Destination, DestinationDetails
+from .models import Destination, DestinationDetails, Accommodation, DiningOption
 
 def home(request):
     # Fetch all distinct continents and countries
@@ -18,12 +18,25 @@ def logout_view(request):
     return render(request, 'login.html')
 
 def destination_list(request):
-    # Replace with logic to retrieve destinations, possibly based on request data
+    # Retrieve all destinations
     destinations = Destination.objects.all()
     return render(request, 'destination.html', {'destinations': destinations})
 
 def destination_detail(request, pk):
-    # Fetch a specific destination detail
+    # Fetch a specific destination by its primary key (pk)
     destination = get_object_or_404(Destination, pk=pk)
+    
+    # Fetch associated details for the destination
     details = get_object_or_404(DestinationDetails, destination=destination)
-    return render(request, 'destination_detail.html', {'destination': destination, 'details': details})
+    
+    # Fetch multiple accommodations and dining options for this destination
+    accommodations = Accommodation.objects.filter(destination_details=details)
+    dining_options = DiningOption.objects.filter(destination_details=details)
+    
+    # Pass everything to the template
+    return render(request, 'destination_detail.html', {
+        'destination': destination,
+        'details': details,
+        'accommodations': accommodations,
+        'dining_options': dining_options
+    })
