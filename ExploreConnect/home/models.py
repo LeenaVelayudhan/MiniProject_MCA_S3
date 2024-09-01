@@ -1,37 +1,39 @@
 from django.db import models
 
 class Destination(models.Model):
-    name = models.CharField(max_length=150)
-    country = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
     continent = models.CharField(max_length=100)
-    country_discription = models.TextField()
+    slideshow_images = models.ManyToManyField('SlideshowImage', related_name='destinations', blank=True)
 
     def __str__(self):
         return self.name
 
-class DestinationDetails(models.Model):
-    destination = models.OneToOneField(Destination, on_delete=models.CASCADE, related_name='details')
-    description = models.TextField()
-    images = models.ImageField(upload_to='destination_images/')  # Stores a single image path or URL
-    cultural_insights = models.TextField()
+
+class SlideshowImage(models.Model):
+    image = models.ImageField(upload_to='slideshow_images/')
+    alt_text = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Details for {self.destination.name}"
+        return self.alt_text
 
-class Accommodation(models.Model):
-    destination_details = models.ForeignKey(DestinationDetails, on_delete=models.CASCADE, related_name='accommodations')
-    name = models.CharField(max_length=200)
+
+class Attraction(models.Model):
+    CATEGORY_CHOICES = [
+        ('historical', 'Historical Places'),
+        ('food', 'Popular Foods'),
+        ('restaurant', 'Restaurants'),
+        ('national_park', 'National Parks'),
+        ('popular_places', 'Popular Places'),
+        ('festival', 'Local Festivals'),
+    ]
+    name = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='accommodation_images/')
-
-    def __str__(self):
-        return self.name
-
-class DiningOption(models.Model):
-    destination_details = models.ForeignKey(DestinationDetails, on_delete=models.CASCADE, related_name='dining_options')
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-    image = models.ImageField(upload_to='dining_images/')
+    image = models.ImageField(upload_to='attractions/')
+    destination = models.ForeignKey(Destination, related_name='attractions', on_delete=models.CASCADE)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    category_description = models.TextField(default="No description provided")
+    category_image = models.ImageField(upload_to='category_images/', blank=True, null=True)
 
     def __str__(self):
         return self.name

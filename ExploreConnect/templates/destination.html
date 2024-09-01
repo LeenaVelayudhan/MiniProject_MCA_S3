@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ destination.name }}</h1>
+<p>{{ destination.description }}</p>
+
+<div class="slideshow-container">
+    {% for image in destination.slideshow_images.all %}
+        <div class="slide">
+            <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" class="slide-image">
+        </div>
+    {% endfor %}
+</div>
+
+<div class="attractions">
+    <h2>Attractions</h2>
+    <div class="attraction-sections">
+        {% for category in destination.attractions.values_list('category', flat=True).distinct %}
+            <div class="category">
+                <h3>{{ category }}</h3>
+                <div class="attraction-items">
+                    {% for attraction in destination.attractions.filter(category=category) %}
+                        <div class="attraction-item">
+                            <img src="{{ attraction.image.url }}" alt="{{ attraction.name }}">
+                            <h4>{{ attraction.name }}</h4>
+                            <a href="{% url 'attraction_detail' attraction.pk %}">View Details</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

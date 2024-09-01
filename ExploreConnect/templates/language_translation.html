@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Translation</title>
+    <link rel="stylesheet" href="{% static 'css/style_translation.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">ExploreConnect</div>
+        <ul class="nav-menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'language_translation' %}">Language Translation</a></li>
+            <li><a href="{% url 'profile' %}">User Profile</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h1>Language Translation</h1>
+        <div class="language-selection">
+            <div class="dropdowns">
+                <div class="dropdown">
+                    <label for="input-language">Input Language:</label>
+                    <select id="input-language" name="input_language">
+                        <!-- Language options will be loaded dynamically -->
+                    </select>
+                </div>
+
+                <div class="dropdown">
+                    <label for="output-language">Output Language:</label>
+                    <select id="output-language" name="output_language">
+                        <!-- Language options will be loaded dynamically -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Button no longer submits the form -->
+            <button id="start_speaking" type="button">🎤 Start Speaking</button>
+
+            <p id="status">Status: Not Speaking</p>
+            <p id="translation_result">Translation result will appear here...</p>
+
+            <audio id="translated_audio" controls style="display: none;"></audio>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 ExploreConnect. All rights reserved.
+    </footer>
+
+    <script src="{% static 'js/translation.js' %}"></script>
+</body>
+</html>
