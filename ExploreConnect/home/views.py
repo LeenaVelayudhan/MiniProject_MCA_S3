@@ -7,17 +7,27 @@ import uuid
 from .models import Destination, Attraction
 
 def continent_list(request):
-    # Fetch all unique continents from the database
+    # Assuming the Destination model has a field 'continent'
     continents = Destination.objects.values_list('continent', flat=True).distinct()
-    return render(request, 'continent_list.html', {'continents': continents})
+    
+    context = {
+        'continents': continents,
+    }
+    return render(request, 'continent_list.html', context)
+def destination_list(request, continent):
+    destinations = Destination.objects.filter(continent=continent)
+    
+    context = {
+        'destinations': destinations,
+        'continent': continent,
+    }
+    return render(request, 'destination_list.html', context)
 
 def destination_list(request, continent):
-    # Fetch all destinations in the selected continent
     destinations = Destination.objects.filter(continent=continent)
-    return render(request, 'destination_list.html', {'destination': destination, 'continent': continent})
+    return render(request, 'destination_list.html', {'destinations': destinations, 'continent': continent})
 
 def destination_detail(request, pk):
-    # Fetch the specific destination by primary key
     destination = get_object_or_404(Destination, pk=pk)
     return render(request, 'destination.html', {'destination': destination})
 
@@ -41,12 +51,6 @@ def profile(request):
 def logout_view(request):
     # Handle logout logic
     return render(request, 'login.html')
-
-def destination_list(request):
-    # Retrieve all destinations
-    destinations = Destination.objects.all()
-    return render(request, 'destination.html', {'destination': destinations})
-
 
 def translate_audio(request):
     if request.method == 'POST':

@@ -35,30 +35,17 @@
         </div>
     </div>
     
-        <div class="destination-grid">
-            <div class="destination-item"></div>
-    <h2>Popular Destinations</h2>
-    <div class="destination-item">
-        {% for destination in destinations %}
         
-            <img src="{{ destination.slideshow_images.first.image.url }}" alt="{{ destination.name }}">
-            <h3>{{ destination.name }}</h3>
-            <p>{{ destination.description }}</p>
-        </div>
-        {% endfor %}
-    </div>
 </div>
 
         <div class="destination-grid">
+            <h2>Popular Destinations</h2>
             <div class="destination-item">
-                <img src="{% static 'images/kerala.jpg' %}" alt="Destination 1">
-                <h3>Destination 1</h3>
-                <p>A beautiful place to visit with stunning landscapes and rich culture.</p>
-            </div>
-            <div class="destination-item">
-                <img src="{% static 'images/destination2.jpg' %}" alt="Destination 2">
-                <h3>Destination 2</h3>
-                <p>Experience the vibrant atmosphere and historic landmarks of this destination.</p>
+                {% for destination in destinations %}
+    
+                <img src="{{ destination.slideshow_images.first.image.url }}" alt="{{ destination.name }}">
+                {{ destination.name }}
+                {% endfor %}
             </div>
            
         </div>

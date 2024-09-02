@@ -2,7 +2,6 @@
 {% block content %}
 <h1>{{ destination.name }}</h1>
 <p>{{ destination.description }}</p>
-
 <div class="slideshow-container">
     {% for image in destination.slideshow_images.all %}
         <div class="slide">
@@ -31,3 +30,4 @@
     </div>
 </div>
 {% endblock %}
+

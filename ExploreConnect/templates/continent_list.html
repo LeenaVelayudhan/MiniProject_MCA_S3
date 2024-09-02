@@ -2,8 +2,8 @@
 {% block content %}
 <h1>Select a Continent</h1>
 <ul>
-    {% for continent in continents %}
-    <li><a href="{% url 'destination_list' continent %}">{{ continent }}</a></li>
+    {% for continent in destinations %}
+    <li><a href="{% url 'destination_list' continent %}">{{ destination.continent }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}
