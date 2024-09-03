@@ -19,21 +19,20 @@ class SlideshowImage(models.Model):
 
 
 class Attraction(models.Model):
+    destination = models.ForeignKey(Destination, related_name='attractions', on_delete=models.CASCADE)
     CATEGORY_CHOICES = [
-        ('historical', 'Historical Places'),
-        ('food', 'Popular Foods'),
-        ('restaurant', 'Restaurants'),
-        ('national_park', 'National Parks'),
-        ('popular_places', 'Popular Places'),
-        ('festival', 'Local Festivals'),
+        ('Harmony between Tradition and Modernity', 'Historical Places'),
+        ('Gourmet Travel', 'Foods & Restaurants '),
+        ('Nature and Its Healing Power', 'Nature'),
+        ('Travel Activities', 'Activities'),
+        ('Popular places (attractions)', 'Popular places'),
+        ('Local Festivals', 'Local festivals'),
+        
     ]
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     name = models.CharField(max_length=100)
     description = models.TextField()
     image = models.ImageField(upload_to='attractions/')
-    destination = models.ForeignKey(Destination, related_name='attractions', on_delete=models.CASCADE)
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    category_description = models.TextField(default="No description provided")
-    category_image = models.ImageField(upload_to='category_images/', blank=True, null=True)
 
     def __str__(self):
         return self.name

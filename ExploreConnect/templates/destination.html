@@ -1,33 +1,51 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>{{ destination.name }}</h1>
-<p>{{ destination.description }}</p>
-<div class="slideshow-container">
-    {% for image in destination.slideshow_images.all %}
-        <div class="slide">
-            <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" class="slide-image">
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Translation</title>
+    <link rel="stylesheet" href="{% static 'css/style3.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">ExploreConnect</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'language_translation' %}">Language Translation</a></li>
+            <li><a href="{% url 'profile' %}">User Profile</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+        <div class="search-bar">
+            <input type="text" placeholder="Search places...">
+            <button>Search</button>
         </div>
-    {% endfor %}
-</div>
 
-<div class="attractions">
-    <h2>Attractions</h2>
-    <div class="attraction-sections">
-        {% for category in destination.attractions.values_list('category', flat=True).distinct %}
-            <div class="category">
-                <h3>{{ category }}</h3>
-                <div class="attraction-items">
-                    {% for attraction in destination.attractions.filter(category=category) %}
-                        <div class="attraction-item">
-                            <img src="{{ attraction.image.url }}" alt="{{ attraction.name }}">
-                            <h4>{{ attraction.name }}</h4>
-                            <a href="{% url 'attraction_detail' attraction.pk %}">View Details</a>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endfor %}
     </div>
-</div>
-{% endblock %}
+
+<div>
+    
+    
+    <div class="popular-destinations">
+        <h1>Destinations</h1>
+        <div class="destination-grid">
+            {% for destination in destinations  %}
+            <div class="destination-card">
+                <a href="{% url 'destination_detail' id=destination.id %}">
+                <img src="{{ destination.slideshow_images.first.image.url }}" alt="{{ destination.name }}">
+                    <h3>{{ destination.name }}</h3>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+   
+
+<footer>
+    &copy; 2024 ExploreConnect. All rights reserved.
+</footer>
+
+
+</body>
+</html>
 

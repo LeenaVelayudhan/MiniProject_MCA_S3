@@ -1,9 +1,64 @@
 {% extends "home.html" %}
 {% block content %}
-<h1>Select a Continent</h1>
-<ul>
-    {% for continent in destinations %}
-    <li><a href="{% url 'destination_list' continent %}">{{ destination.continent }}</a></li>
-    {% endfor %}
-</ul>
-{% endblock %}
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continents and Countries</title>
+    <link rel="stylesheet" href="{% static 'css/style3.css' %}">
+</head>
+<body>
+    <div id="container">
+        <div id="continent-list">
+            <h2>Continents</h2>
+            {% for continent in continents %}
+                <button onclick="showCountries('{{ continent }}')">{{ continent }}</button>
+            {% endfor %}
+        </div>
+        <div id="country-list">
+            <h2>Countries</h2>
+            <ul id="countries">
+                <!-- Country list will be updated here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showCountries(continent) {
+            fetch(`/get-countries/?continent=${encodeURIComponent(continent)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const countryList = document.getElementById('countries');
+                    countryList.innerHTML = '';
+
+                    if (data.error) {
+                        console.error(data.error);
+                        countryList.innerHTML = '<li>Error fetching countries</li>';
+                        return;
+                    }
+
+                    if (data.countries.length === 0) {
+                        countryList.innerHTML = '<li>No countries found</li>';
+                    } else {
+                        data.countries.forEach(country => {
+                            const li = document.createElement('li');
+                            li.textContent = country;
+                            countryList.appendChild(li);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching countries:', error);
+                });
+        }
+
+        // Show countries for the initial continent on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            showCountries('{{ initial_continent }}');
+        });
+    </script>
+</body>
+</html>
+

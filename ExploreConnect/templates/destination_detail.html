@@ -4,50 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ destination.name }} - ExploreConnect</title>
-    <link rel="stylesheet" href="{% static 'css/style_destination.css' %}">
+    <title>Language Translation</title>
+    <link rel="stylesheet" href="{% static 'css/style3.css' %}">
 </head>
 <body>
     <div class="navbar">
-        <!-- Include your navbar code here -->
+        <div class="logo">ExploreConnect</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'language_translation' %}">Language Translation</a></li>
+            <li><a href="{% url 'profile' %}">User Profile</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+        <div class="search-bar">
+            <input type="text" placeholder="Search places...">
+            <button>Search</button>
+        </div>
+
     </div>
 
-    <div class="content">
-        <h1>{{ destination.name }}</h1>
-        <div class="slideshow-container">
-            {% for image in destination.slideshow_images.all %}
-                <div class="slide">
-                    <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" class="slide-image">
-                </div>
-            {% endfor %}
-        </div>
-        <p>{{ destination.description }}</p>
-
-        <div class="attractions">
-            <h2>Attractions</h2>
-            <div class="attraction-sections">
-                {% for category in destination.attractions.values_list('category', flat=True).distinct %}
-                    <div class="category">
-                        <h3>{{ category.name }}</h3>
-                        <div class="attraction-items">
-                            {% for attraction in destination.attractions.filter(category=category) %}
-                                <div class="attraction-item">
-                                    <img src="{{ attraction.image.url }}" alt="{{ attraction.name }}">
-                                    <h4>{{ attraction.name }}</h4>
-                                    <a href="{% url 'attraction_detail' attraction.pk %}">View Details</a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+<div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Destinations</title>
+        
+    </head>
+    <body>
+        <div class="con">
+    
+            {% for destination in destinations %}
+            <div class="destination">
+                <h2>{{ destination.name }}</h2>
+                <p>{{ destination.description }}</p>
                 {% endfor %}
-            </div>
+              </div>  
+                <h3>Attractions</h3>
+                <div class="attractions">
+                    {% for attraction in destination.attractions.all %}
+                    <div class="attraction">
+                        <img src="{{ attractions.image.url }}" alt="{{ attraction.name }}">
+                        <h4>{{ attraction.name }}</h4>
+                        <p>{{ attraction.description }}</p>
+                        <p>Category: {{ attraction.get_category_display }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            
+           
         </div>
-    </div>
-
+  
+        
+        
     <footer>
         &copy; 2024 ExploreConnect. All rights reserved.
     </footer>
-    <script src="{% static 'js/slide.js' %}"></script>
+
 
 </body>
 </html>
