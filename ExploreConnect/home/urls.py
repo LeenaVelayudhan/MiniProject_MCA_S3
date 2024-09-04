@@ -9,7 +9,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('destinations/', views.destination, name='destination'),
     path('destination/<int:id>/', views.destination_detail, name='destination_detail'),
-    path('attraction/<int:id>/', views.attraction_detail, name='attraction_detail'),
-    path('translate/', views.language_translation, name='translate'),
+    path('translate-audio/', views.translate_audio, name='translate_audio'),
+    
    
 ]

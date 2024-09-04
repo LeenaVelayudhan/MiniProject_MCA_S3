@@ -1,117 +1,114 @@
+  
 document.addEventListener('DOMContentLoaded', function () {
-    const languageOptions = {
-        'af': 'afrikaans', 
-        'sq': 'albanian',
-        'am': 'amharic', 
-        'ar': 'arabic', 
-        'hy': 'armenian', 
-        'az': 'azerbaijani', 
-        'eu': 'basque', 
-        'be': 'belarusian', 
-        'bn': 'bengali', 
-        'bs': 'bosnian', 
-        'bg': 'bulgarian', 
-        'ca': 'catalan', 
-        'ceb': 'cebuano', 
-        'ny': 'chichewa', 
-        'zh-cn': 'chinese (simplified)', 
-        'zh-tw': 'chinese (traditional)', 
-        'co': 'corsican', 
-        'hr': 'croatian', 
-        'cs': 'czech', 
-        'da': 'danish', 
-        'nl': 'dutch', 
-        'en': 'english', 
-        'eo': 'esperanto', 
-        'et': 'estonian', 
-        'tl': 'filipino', 
-        'fi': 'finnish', 
-        'fr': 'french', 
-        'fy': 'frisian', 
-        'gl': 'galician', 
-        'ka': 'georgian', 
-        'de': 'german', 
-        'el': 'greek', 
-        'gu': 'gujarati', 
-        'ht': 'haitian creole', 
-        'ha': 'hausa', 
-        'haw': 'hawaiian', 
-        'iw': 'hebrew', 
-        'he': 'hebrew', 
-        'hi': 'hindi', 
-        'hmn': 'hmong', 
-        'hu': 'hungarian', 
-        'is': 'icelandic', 
-        'ig': 'igbo', 
-        'id': 'indonesian', 
-        'ga': 'irish', 
-        'it': 'italian', 
-        'ja': 'japanese', 
-        'jw': 'javanese', 
-        'kn': 'kannada', 
-        'kk': 'kazakh', 
-        'km': 'khmer', 
-        'ko': 'korean', 
-        'ku': 'kurdish (kurmanji)', 
-        'ky': 'kyrgyz', 
-        'lo': 'lao', 
-        'la': 'latin', 
-        'lv': 'latvian', 
-        'lt': 'lithuanian', 
-        'lb': 'luxembourgish', 
-        'mk': 'macedonian', 
-        'mg': 'malagasy', 
-        'ms': 'malay', 
-        'ml': 'malayalam', 
-        'mt': 'maltese', 
-        'mi': 'maori', 
-        'mr': 'marathi', 
-        'mn': 'mongolian', 
-        'my': 'myanmar (burmese)', 
-        'ne': 'nepali', 
-        'no': 'norwegian', 
-        'or': 'odia', 
-        'ps': 'pashto', 
-        'fa': 'persian', 
-        'pl': 'polish', 
-        'pt': 'portuguese', 
-        'pa': 'punjabi', 
-        'ro': 'romanian', 
-        'ru': 'russian', 
-        'sm': 'samoan', 
-        'gd': 'scots gaelic', 
-        'sr': 'serbian', 
-        'st': 'sesotho', 
-        'sn': 'shona', 
-        'sd': 'sindhi', 
-        'si': 'sinhala', 
-        'sk': 'slovak', 
-        'sl': 'slovenian', 
-        'so': 'somali', 
-        'es': 'spanish', 
-        'su': 'sundanese', 
-        'sw': 'swahili', 
-        'sv': 'swedish', 
-        'tg': 'tajik', 
-        'ta': 'tamil', 
-        'te': 'telugu', 
-        'th': 'thai', 
-        'tr': 'turkish', 
-        'uk': 'ukrainian', 
-        'ur': 'urdu', 
-        'ug': 'uyghur', 
-        'uz': 'uzbek', 
-        'vi': 'vietnamese', 
-        'cy': 'welsh', 
-        'xh': 'xhosa', 
-        'yi': 'yiddish', 
-        'yo': 'yoruba', 
-        'zu': 'zulu'
-        
-    };
-
-    
-    // Populate language dropdowns
+            const languageOptions = {
+                'af': 'afrikaans', 
+                'sq': 'albanian',
+                'am': 'amharic', 
+                'ar': 'arabic', 
+                'hy': 'armenian', 
+                'az': 'azerbaijani', 
+                'eu': 'basque', 
+                'be': 'belarusian', 
+                'bn': 'bengali', 
+                'bs': 'bosnian', 
+                'bg': 'bulgarian', 
+                'ca': 'catalan', 
+                'ceb': 'cebuano', 
+                'ny': 'chichewa', 
+                'zh-cn': 'chinese (simplified)', 
+                'zh-tw': 'chinese (traditional)', 
+                'co': 'corsican', 
+                'hr': 'croatian', 
+                'cs': 'czech', 
+                'da': 'danish', 
+                'nl': 'dutch', 
+                'en': 'english', 
+                'eo': 'esperanto', 
+                'et': 'estonian', 
+                'tl': 'filipino', 
+                'fi': 'finnish', 
+                'fr': 'french', 
+                'fy': 'frisian', 
+                'gl': 'galician', 
+                'ka': 'georgian', 
+                'de': 'german', 
+                'el': 'greek', 
+                'gu': 'gujarati', 
+                'ht': 'haitian creole', 
+                'ha': 'hausa', 
+                'haw': 'hawaiian', 
+                'iw': 'hebrew', 
+                'he': 'hebrew', 
+                'hi': 'hindi', 
+                'hmn': 'hmong', 
+                'hu': 'hungarian', 
+                'is': 'icelandic', 
+                'ig': 'igbo', 
+                'id': 'indonesian', 
+                'ga': 'irish', 
+                'it': 'italian', 
+                'ja': 'japanese', 
+                'jw': 'javanese', 
+                'kn': 'kannada', 
+                'kk': 'kazakh', 
+                'km': 'khmer', 
+                'ko': 'korean', 
+                'ku': 'kurdish (kurmanji)', 
+                'ky': 'kyrgyz', 
+                'lo': 'lao', 
+                'la': 'latin', 
+                'lv': 'latvian', 
+                'lt': 'lithuanian', 
+                'lb': 'luxembourgish', 
+                'mk': 'macedonian', 
+                'mg': 'malagasy', 
+                'ms': 'malay', 
+                'ml': 'malayalam', 
+                'mt': 'maltese', 
+                'mi': 'maori', 
+                'mr': 'marathi', 
+                'mn': 'mongolian', 
+                'my': 'myanmar (burmese)', 
+                'ne': 'nepali', 
+                'no': 'norwegian', 
+                'or': 'odia', 
+                'ps': 'pashto', 
+                'fa': 'persian', 
+                'pl': 'polish', 
+                'pt': 'portuguese', 
+                'pa': 'punjabi', 
+                'ro': 'romanian', 
+                'ru': 'russian', 
+                'sm': 'samoan', 
+                'gd': 'scots gaelic', 
+                'sr': 'serbian', 
+                'st': 'sesotho', 
+                'sn': 'shona', 
+                'sd': 'sindhi', 
+                'si': 'sinhala', 
+                'sk': 'slovak', 
+                'sl': 'slovenian', 
+                'so': 'somali', 
+                'es': 'spanish', 
+                'su': 'sundanese', 
+                'sw': 'swahili', 
+                'sv': 'swedish', 
+                'tg': 'tajik', 
+                'ta': 'tamil', 
+                'te': 'telugu', 
+                'th': 'thai', 
+                'tr': 'turkish', 
+                'uk': 'ukrainian', 
+                'ur': 'urdu', 
+                'ug': 'uyghur', 
+                'uz': 'uzbek', 
+                'vi': 'vietnamese', 
+                'cy': 'welsh', 
+                'xh': 'xhosa', 
+                'yi': 'yiddish', 
+                'yo': 'yoruba', 
+                'zu': 'zulu'
+            };
     const inputLanguageSelect = document.getElementById('input-language');
     const outputLanguageSelect = document.getElementById('output-language');
 
@@ -125,19 +122,20 @@ document.addEventListener('DOMContentLoaded', function () {
         outputOption.value = code;
         outputOption.textContent = language;
         outputLanguageSelect.appendChild(outputOption);
-    }
+    }     
+            
+    let recognition;
+    let recognizedText = '';
 
-    document.getElementById('start_speaking').addEventListener('click', function(event) {
-        event.preventDefault();  // Prevent page refresh
+    document.getElementById('start_speaking').addEventListener('click', function (event) {
+        event.preventDefault();
 
         const inputLanguage = document.getElementById('input-language').value;
-        const outputLanguage = document.getElementById('output-language').value;
         const statusElement = document.getElementById('status');
         const resultElement = document.getElementById('translation_result');
-        const audioElement = document.getElementById('translated_audio');
 
         // Initialize SpeechRecognition
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = inputLanguage;
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
@@ -146,27 +144,61 @@ document.addEventListener('DOMContentLoaded', function () {
 
         recognition.start();
 
-        recognition.onresult = function(event) {
-            const inputText = event.results[0][0].transcript;
-            console.log("Speech recognized:", inputText);  // Log recognized text
-            statusElement.textContent = 'Status: Processing...';
-            resultElement.textContent = `Heard: ${inputText}`;  // Display recognized text before translation
+        recognition.onresult = function (event) {
+            recognizedText = event.results[0][0].transcript;
+            console.log("Speech recognized:", recognizedText);
+            statusElement.textContent = 'Status: Speech recognized';
+            resultElement.textContent = `Heard: ${recognizedText}`;
+        };
 
-            // Send the recognized speech to the Django view for translation
-            fetch('/translate-audio/', {
+        recognition.onerror = function (event) {
+            console.error('SpeechRecognition error:', event.error);
+            statusElement.textContent = `Error: ${event.error}`;
+        };
+
+        recognition.onspeechend = function () {
+            recognition.stop();
+            statusElement.textContent = 'Status: Recognition ended';
+            console.log("Speech recognition ended");
+        };
+    });
+
+    document.getElementById('stop_speaking').addEventListener('click', function () {
+        if (recognition) {
+            recognition.stop();
+            document.getElementById('status').textContent = 'Status: Stopped';
+            console.log("Speech recognition stopped manually");
+        }
+    });
+
+    document.getElementById('translate_button').addEventListener('click', function () {
+        const inputLanguage = document.getElementById('input-language').value;
+        const outputLanguage = document.getElementById('output-language').value;
+        const resultElement = document.getElementById('translation_result');
+        const audioElement = document.getElementById('translated_audio');
+        const statusElement = document.getElementById('status');
+
+        if (recognizedText) {
+            console.log("Starting translation for text:", recognizedText);
+
+            statusElement.textContent = 'Status: Translating...';
+
+            fetch('/translate_audio/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
                 body: new URLSearchParams({
-                    'input_text': inputText,
+                    'input_text': recognizedText,
                     'input_language': inputLanguage,
                     'output_language': outputLanguage
                 })
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Translation response:", data);
+
                 if (data.translated_text) {
                     resultElement.textContent = `Translation: ${data.translated_text}`;
                     audioElement.src = data.audio_path;
@@ -183,21 +215,60 @@ document.addEventListener('DOMContentLoaded', function () {
                 resultElement.textContent = 'An error occurred during translation.';
                 statusElement.textContent = 'Status: Error';
             });
-            
-        };
+        } else {
+            resultElement.textContent = 'No recognized text to translate. Please start speaking first.';
+            statusElement.textContent = 'Status: Error';
+        }
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        const csrftoken = getCookie('csrftoken');
+        function translateAudio() {
+    const data = {
+        input_text: document.getElementById('input-text').value,
+        input_language: document.getElementById('input-language').value,
+        output_language: document.getElementById('output-language').value,
+    };
 
-        recognition.onerror = function(event) {
-            console.error('SpeechRecognition error:', event.error);  // Log recognition errors
-            statusElement.textContent = `Error: ${event.error}`;
-        };
+    fetch('/translate_audio/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,  // Include the CSRF token here
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Success:', result);
+        document.getElementById('translation_result').innerText = result.translated_text;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
-        recognition.onspeechend = function() {
-            recognition.stop();
-            statusElement.textContent = 'Status: Processing...';
-            console.log("Speech recognition ended");  // Log when speech recognition ends
-        };
+document.getElementById('translate_button').addEventListener('click', translateAudio);
+
+        
     });
 });
+            
+            
+    
     
     
     

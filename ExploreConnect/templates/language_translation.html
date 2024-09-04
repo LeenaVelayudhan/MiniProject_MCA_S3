@@ -33,23 +33,104 @@
                         <!-- Language options will be loaded dynamically -->
                     </select>
                 </div>
-
+                <button id="swap_languages">⇆ </button>
                 <div class="dropdown">
                     <label for="output-language">Output Language:</label>
                     <select id="output-language" name="output_language">
                         <!-- Language options will be loaded dynamically -->
                     </select>
                 </div>
+
+                </div>
             </div>
 
-            <!-- Button no longer submits the form -->
             <button id="start_speaking" type="button">🎤 Start Speaking</button>
-
+            <button id="stop_speaking" type="button">🛑 Stop Speaking</button>
+            <button id="translate_button" type="button">🔄 Translate</button>
             <p id="status">Status: Not Speaking</p>
-            <p id="translation_result">Translation result will appear here...</p>
-
             <audio id="translated_audio" controls style="display: none;"></audio>
+            <p id="translation_result"></p>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const startSpeakingButton = document.getElementById('start_speaking');
+                const stopSpeakingButton = document.getElementById('stop_speaking');
+                const translateButton = document.getElementById('translate_button');
+                const statusParagraph = document.getElementById('status');
+                const translatedAudio = document.getElementById('translated_audio');
+                const translationResult = document.getElementById('translation_result');
+                
+                let recognition;
+                let isSpeaking = false;
+            
+                if ('webkitSpeechRecognition' in window) {
+                    recognition = new webkitSpeechRecognition();
+                    recognition.continuous = true;
+                    recognition.interimResults = true;
+            
+                    recognition.onresult = function (event) {
+                        const transcript = Array.from(event.results)
+                                                .map(result => result[0].transcript)
+                                                .join('');
+                        translationResult.textContent = `You said: ${transcript}`;
+                    };
+            
+                    recognition.onend = function () {
+                        isSpeaking = false;
+                        statusParagraph.textContent = 'Status: Not Speaking';
+                    };
+                } else {
+                    console.error('Speech recognition not supported');
+                }
+            
+                startSpeakingButton.addEventListener('click', function () {
+                    if (recognition && !isSpeaking) {
+                        recognition.start();
+                        isSpeaking = true;
+                        statusParagraph.textContent = 'Status: Speaking';
+                    }
+                });
+            
+                stopSpeakingButton.addEventListener('click', function () {
+                    if (recognition && isSpeaking) {
+                        recognition.stop();
+                    }
+                });
+            
+                translateButton.addEventListener('click', function () {
+                    const textToTranslate = translationResult.textContent.replace('You said: ', '');
+                    const inputLanguage = 'en'; // Set your input language
+                    const outputLanguage = 'es'; // Set your desired output language
+            
+                    const formData = new FormData();
+                    formData.append('input_text', textToTranslate);
+                    formData.append('input_language', inputLanguage);
+                    formData.append('output_language', outputLanguage);
+            
+                    fetch('/translate-audio/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}' // Ensure this is set correctly
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            translationResult.textContent = `Error: ${data.error}`;
+                        } else {
+                            translationResult.textContent = `Translation: ${data.translated_text}`;
+                            translatedAudio.src = data.audio_path;
+                            translatedAudio.style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        translationResult.textContent = `Error: ${error}`;
+                    });
+                });
+            });
+            </script>
+            
     </div>
 
     <footer>

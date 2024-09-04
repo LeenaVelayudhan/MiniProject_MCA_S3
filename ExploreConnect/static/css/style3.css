@@ -77,8 +77,7 @@ body {
     padding: 20px;
 }
 
-/* Slideshow container */
-/* Slideshow container */
+
 .slideshow-container {
   position: relative;
   max-width: 90%; /* Adjusted size for larger image */
@@ -461,6 +460,14 @@ h1 {
 .attractions {
     margin-top: 20px;
 }
+.attractions {
+  background-color: #88cecb;
+  
+}
+.attractions  h2{
+  color: #3c1414;
+  
+}
 
 .attraction-sections {
     display: flex;
@@ -609,6 +616,7 @@ h1 {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 @media (max-width: 768px) {
   .destination-grid {
       justify-content: space-around;  /* Adjust to space items evenly on smaller screens */
@@ -695,4 +703,26 @@ h1 {
 .attraction img {
   width: 100%;
   height: auto;
+}
+.attraction p {
+ text-align: justify;
+}
+.bowl {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #d4c2d6;
+  padding:0%,10%,0%,10%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bowl img {
+  display: block; /* Ensures the image behaves as a block-level element */
+  
+  height: auto; /* Maintains the aspect ratio of the image */
+  margin: 0 auto; /* Centers the image horizontally */
+  padding: 10%,10%.10%,10%;
+}
+.bowl p {
+  text-align: justify;
 }

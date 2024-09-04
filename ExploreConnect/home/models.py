@@ -21,12 +21,12 @@ class SlideshowImage(models.Model):
 class Attraction(models.Model):
     destination = models.ForeignKey(Destination, related_name='attractions', on_delete=models.CASCADE)
     CATEGORY_CHOICES = [
-        ('Harmony between Tradition and Modernity', 'Historical Places'),
-        ('Gourmet Travel', 'Foods & Restaurants '),
-        ('Nature and Its Healing Power', 'Nature'),
-        ('Travel Activities', 'Activities'),
-        ('Popular places (attractions)', 'Popular places'),
-        ('Local Festivals', 'Local festivals'),
+        ('Historical Places','Harmony between Tradition and Modernity'),
+        ('Foods & Restaurants ','Gourmet Travel'),
+        ('Nature','Nature and Its Healing Power'),
+        ('Activities','Travel Activities'),
+        ('Popular places','Popular places (attractions)'),
+        ('Local festivals','Local Festivals'),
         
     ]
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)

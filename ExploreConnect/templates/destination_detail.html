@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Translation</title>
+    <title>{{ destination.name }}</title>
     <link rel="stylesheet" href="{% static 'css/style3.css' %}">
 </head>
 <body>
@@ -20,48 +20,47 @@
             <input type="text" placeholder="Search places...">
             <button>Search</button>
         </div>
-
     </div>
 
-<div>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Destinations</title>
-        
-    </head>
-    <body>
-        <div class="con">
-    
-            {% for destination in destinations %}
-            <div class="destination">
-                <h2>{{ destination.name }}</h2>
-                <p>{{ destination.description }}</p>
-                {% endfor %}
-              </div>  
-                <h3>Attractions</h3>
-                <div class="attractions">
-                    {% for attraction in destination.attractions.all %}
-                    <div class="attraction">
-                        <img src="{{ attractions.image.url }}" alt="{{ attraction.name }}">
-                        <h4>{{ attraction.name }}</h4>
-                        <p>{{ attraction.description }}</p>
-                        <p>Category: {{ attraction.get_category_display }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
+    <div class="bowl">
+        <h1>{{ destination.name }}</h1>
+        {% if destination.slideshow_images.exists %}
+     
+            <img src="{{ destination.slideshow_images.first.image.url }}" alt="{{ destination.name }}"  >
             
-           
-        </div>
+    
+        {% else %}
+            <p>No images available for this destination.</p>
+        {% endif %}
+        <p>{{ destination.description }}</p>
   
-        
-        
+        <div class="attractions">
+            {% if attractions_by_category %}
+                {% for category, attractions in attractions_by_category.items %}
+                    <h2>{{ category }}</h2>
+                    <div class="attraction-list">
+                        {% if attractions %}
+                            {% for attraction in attractions %}
+                                <div class="attraction">
+                                    <img src="{{ attraction.image.url }}" alt="{{ attraction.name }}" class="attraction-image">
+                                    <h3>{{ attraction.name }}</h3>
+                                    <p>{{ attraction.description }}</p>
+                                    
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No attractions found in this category.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No attractions available for this destination.</p>
+            {% endif %}
+        </div>
+    </div>
+
     <footer>
         &copy; 2024 ExploreConnect. All rights reserved.
     </footer>
-
-
 </body>
 </html>
