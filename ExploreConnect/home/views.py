@@ -15,6 +15,7 @@ from collections import defaultdict
 
 
 
+
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 
@@ -60,8 +61,9 @@ def destination_detail(request, id):
         'destination': destination,
         'attractions_by_category': attractions_by_category,
     })
+
 def home(request):
-    # Example query using valid fields
+
     destinations = Destination.objects.all()  # Replace this with your actual query
     return render(request, 'home.html', {'destinations': destinations})
 
@@ -107,4 +109,21 @@ def translate_audio(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+
+
+# def translate_audio(request):
+#     if request.method == 'POST':
+#         input_text = request.POST.get('input_text')
+#         input_language = request.POST.get('input_language')
+#         output_language = request.POST.get('output_language')
+        
+#         # Example: Call a translation function here (you would need to implement this)
+#         translated_text = your_translation_function(input_text, input_language, output_language)
+        
+#         return JsonResponse({
+#             'translated_text': translated_text,
+#             'audio_path': '/path/to/translated/audio/file'
+#         })
+    
+#     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
