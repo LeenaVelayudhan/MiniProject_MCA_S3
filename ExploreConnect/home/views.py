@@ -83,7 +83,7 @@ def translate_audio(request):
         try:
             translator = Translator()
             input_text = request.POST.get('text', '')
-            target_language = request.POST.get('language', 'en')
+            target_language = request.POST.get('language', '')
 
             if not input_text or not target_language:
                 return JsonResponse({'error': 'Text or target language not provided'}, status=400)
