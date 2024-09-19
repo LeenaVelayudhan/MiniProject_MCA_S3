@@ -12,33 +12,9 @@ import uuid
 from speech_recognition import Recognizer, AudioFile
 import speech_recognition as sr
 from collections import defaultdict
-
-
-
-
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
-
-def continent_list(request):
-    # Fetch distinct continents from the Destination model
-    continents = Destination.objects.values_list('continent', flat=True).distinct()
-    
-    context = {
-        'continents': continents,
-    }
-    return render(request, 'continent_list.html', context)
-def destination_list(request, continent):
-    destinations = Destination.objects.filter(continent=continent)
-    
-    context = {
-        'destinations': destinations,
-        'continent': continent,
-    }
-    return render(request, 'destination_list.html', context)
-
-def destination_list(request, continent):
-    destinations = Destination.objects.filter(continent=continent)
-    return render(request, 'destination_list.html', {'destinations': destinations, 'continent': continent})
+from django.conf import settings
 
 
 def destination(request):
@@ -82,48 +58,31 @@ def translate_audio(request):
     if request.method == 'POST':
         try:
             translator = Translator()
-            input_text = request.POST.get('text', '')
-            target_language = request.POST.get('language', '')
+            input_text = request.POST.get('input_text', '')
+            output_language = request.POST.get('output_language', '')
 
-            if not input_text or not target_language:
+            if not input_text or not output_language:
                 return JsonResponse({'error': 'Text or target language not provided'}, status=400)
 
             # Translate the text
-            translated = translator.translate(input_text, dest=target_language)
+            translated = translator.translate(input_text, dest=output_language)
             translated_text = translated.text
+            print(f"Translated text: {translated_text}")  # Debugging
 
             # Convert translated text to speech
-            tts = gTTS(translated_text, lang=target_language)
+            tts = gTTS(translated_text, lang=output_language)
             audio_filename = f"{uuid.uuid4()}.mp3"
-            audio_filepath = os.path.join('media', audio_filename)
+            audio_filepath = os.path.join(settings.MEDIA_ROOT, audio_filename)
             tts.save(audio_filepath)
 
-            # Return the path to the audio file
             return JsonResponse({
                 'translated_text': translated_text,
                 'audio_path': f'/media/{audio_filename}'
             })
 
         except Exception as e:
+            print(f"Translation Error: {e}")  # Debugging
             return JsonResponse({'error': str(e)}, status=500)
 
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
-
-
-
-# def translate_audio(request):
-#     if request.method == 'POST':
-#         input_text = request.POST.get('input_text')
-#         input_language = request.POST.get('input_language')
-#         output_language = request.POST.get('output_language')
-        
-#         # Example: Call a translation function here (you would need to implement this)
-#         translated_text = your_translation_function(input_text, input_language, output_language)
-        
-#         return JsonResponse({
-#             'translated_text': translated_text,
-#             'audio_path': '/path/to/translated/audio/file'
-#         })
-    
-#     return JsonResponse({'error': 'Invalid request method'}, status=405)
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 

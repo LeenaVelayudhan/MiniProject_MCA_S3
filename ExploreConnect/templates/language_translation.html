@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{% static 'css/style3.css' %}">
 </head>
 <body>
+    <form  method="post">
+        {% csrf_token %}
     <div class="navbar">
         <div class="logo">ExploreConnect</div>
         <ul class="nav-links">
@@ -26,19 +28,20 @@
     <div class="content">
         <h1>Language Translation</h1>
         <div class="language-selection">
-            <label for="input-language-text" >
+            <label for="input_langguage=text"> 
             <div class="dropdowns">
                 <div class="dropdown">
-                    <label for="input-language">Input Language:</label>
-                    <select id="input-language" name="input_language">
-                        <!-- Language options will be loaded dynamically -->
+                    <label id="input-language-text" >Input Language:</label>
+                    <select id="input-language"  readonly style="width: 150px;">
+                        <option value="">Select language</option>
                     </select>
+                    </label> 
                 </div>
-                <button id="swap_languages">⇆ </button>
+                <button id="swap_languages" type="button">⇆ </button>
                 <div class="dropdown">
-                    <label for="output-language">Output Language:</label>
-                    <select id="output-language" name="output_language">
-                        <!-- Language options will be loaded dynamically -->
+                    <label id="output-language-text">Output Language:</label>
+                    <select id="output-language"  readonly style="width: 150px;">
+                        <option value="">Select language</option>
                     </select>
                 </div>
 
@@ -48,11 +51,13 @@
             <button id="stop_speaking" type="button">🛑 Stop Speaking</button>
             <button id="translate_button" type="button">🔄 Translate</button>
             <p id="status">Status: Not Speaking</p>
-            <audio id="translated_audio" controls style="display: none;"></audio>
-            <p id="translation_result"></p>
+            <p id="translation_result">
+                <audio id="translated_audio" controls style="display: none;"></audio>
+            </p>
+        </label>  
         </div>
 
-
+    </form>
     <footer>
         &copy; 2024 ExploreConnect. All rights reserved.
     </footer>

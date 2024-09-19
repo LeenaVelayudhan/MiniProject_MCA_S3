@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Language options
     const languageOptions = {
         'af': 'Afrikaans', 'sq': 'Albanian', 'am': 'Amharic', 'ar': 'Arabic', 
         'hy': 'Armenian', 'az': 'Azerbaijani', 'eu': 'Basque', 'be': 'Belarusian', 
@@ -26,15 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
         'sw': 'Swahili', 'sv': 'Swedish', 'tg': 'Tajik', 'ta': 'Tamil', 
         'te': 'Telugu', 'th': 'Thai', 'tr': 'Turkish', 'uk': 'Ukrainian', 
         'ur': 'Urdu', 'uz': 'Uzbek', 'vi': 'Vietnamese', 'cy': 'Welsh', 
-        'xh': 'Xhosa', 'yi': 'Yiddish', 'yo': 'Yoruba', 'zu': 'Zulu',
+        'xh': 'Xhosa', 'yi': 'Yiddish', 'yo': 'Yoruba', 'zu': 'Zulu'
     };
 
     const inputLanguageSelect = document.getElementById('input-language');
     const outputLanguageSelect = document.getElementById('output-language');
-    const inputLanguageTextBox = document.getElementById('input-language-text');  // Input language textbox
-    const outputLanguageTextBox = document.getElementById('output-language-text');  // Output language textbox
-
-    // Populate language options for both input and output
+    const inputLanguageTextBox = document.getElementById('input-language-text');
+    const outputLanguageTextBox = document.getElementById('output-language-text');
+    
+    // Populate language options
     Object.entries(languageOptions).forEach(([code, language]) => {
         const inputOption = new Option(language, code);
         const outputOption = new Option(language, code);
@@ -50,9 +51,25 @@ document.addEventListener('DOMContentLoaded', function () {
         outputLanguageTextBox.value = outputLanguageSelect.options[outputLanguageSelect.selectedIndex].text;
     });
 
+    document.getElementById('swap_languages').addEventListener('click', function() {
+        const inputSelectedIndex = inputLanguageSelect.selectedIndex;
+        const outputSelectedIndex = outputLanguageSelect.selectedIndex;
+
+        // Swap the selected values
+        inputLanguageSelect.selectedIndex = outputSelectedIndex;
+        outputLanguageSelect.selectedIndex = inputSelectedIndex;
+
+        // Also swap the textbox values
+        const tempInputText = inputLanguageTextBox.value;
+        inputLanguageTextBox.value = outputLanguageTextBox.value;
+        outputLanguageTextBox.value = tempInputText;
+    });
+
+
     let recognition;
     let recognizedText = '';
 
+    // Start Speech Recognition
     document.getElementById('start_speaking').addEventListener('click', function (event) {
         event.preventDefault();
 
@@ -84,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     });
 
+    // Stop Speech Recognition
     document.getElementById('stop_speaking').addEventListener('click', function () {
         if (recognition) {
             recognition.stop();
@@ -91,13 +109,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Translate Button Click
+    const audioElement = document.getElementById('translated_audio');
+
+    if (!audioElement) {
+        console.error("Element with ID 'translated_audio' not found.");
+        return; // Exit if the element is not found
+    }
+
     document.getElementById('translate_button').addEventListener('click', function () {
         const inputLanguage = inputLanguageSelect.value;
         const outputLanguage = outputLanguageSelect.value;
         const resultElement = document.getElementById('translation_result');
-        const audioElement = document.getElementById('translated_audio');
         const statusElement = document.getElementById('status');
-
+        
         if (!recognizedText) {
             resultElement.textContent = 'No recognized text to translate. Please start speaking first.';
             statusElement.textContent = 'Status: Error';
@@ -105,12 +130,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         statusElement.textContent = 'Status: Translating...';
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
-        fetch('/translate_audio/', {  
+
+        fetch('/homelanguage_translation/translate_audio/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCookie('csrftoken')  
+                'X-CSRFToken': getCookie('csrftoken')
             },
             body: new URLSearchParams({
                 'input_text': recognizedText,
@@ -118,34 +158,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 'output_language': outputLanguage
             })
         })
-        
         .then(response => response.json())
         .then(data => {
-            if (data.translated_text) {
-                resultElement.textContent = `Translation: ${data.translated_text}`;
+            if (data.audio_path) {
                 audioElement.src = data.audio_path;
                 audioElement.style.display = 'block';
                 audioElement.play();
-                statusElement.textContent = 'Status: Translation Complete';
+                
+                if (data.translated_text) {
+                    resultElement.textContent = `Translation: ${data.translated_text}`;
+                    statusElement.textContent = 'Status: Translation Complete';
+                } else {
+                    resultElement.textContent = 'Translation failed.';
+                    statusElement.textContent = 'Status: Error';
+                }
             } else {
-                resultElement.textContent = 'Translation failed.';
+                resultElement.textContent = 'Error: audio_path is missing or audio element not found';
                 statusElement.textContent = 'Status: Error';
             }
         })
         .catch(error => {
             resultElement.textContent = 'An error occurred during translation.';
-            statusElement.textContent = 'Status: Error';
+            statusElement.textContent = `Status: ${error.message}`;
         });
     });
-
-    // Helper function to retrieve CSRF token
-    function getCookie(name) {
-        const cookies = document.cookie.split(';').map(cookie => cookie.trim());
-        for (const cookie of cookies) {
-            if (cookie.startsWith(`${name}=`)) {
-                return decodeURIComponent(cookie.slice(name.length + 1));
-            }
-        }
-        return null;
-    }
 });
