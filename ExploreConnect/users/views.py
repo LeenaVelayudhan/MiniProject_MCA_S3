@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from django.views.decorators.cache import cache_control
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def home(request):
     return render(request, 'home.html')
@@ -96,9 +97,17 @@ def login_view(request):
         
         if user is not None:
             auth_login(request, user)
-            return redirect('home')
+            if user.is_superuser:
+                return redirect('/admin/')  # Redirect superuser to the admin page
+            else:
+                return redirect('home')  # Regular users redirect to the home page
         else:
             messages.error(request, 'Invalid credentials. Please try again.')
             return redirect('login')
 
     return render(request, 'login.html')
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Redirect to login after logout

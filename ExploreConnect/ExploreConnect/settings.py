@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-+=n(i1uzqw2=#h6^z^nl$xmc#%vqyvsm#h@*w1e$mkye#89n%4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['ExploreConnect.com', '127.0.0.1']
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Application definition
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'users',
+    'Ltranslation',
 
 
 ]
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'users.middleware.NoCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'ExploreConnect.urls'
@@ -124,7 +126,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
+LOGIN_URL = '/login/' 
+LOGOUT_REDIRECT_URL = 'login'  # Name of the URL pattern for your login view
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
