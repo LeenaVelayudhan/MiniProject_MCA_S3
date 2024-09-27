@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExploreConnect - Manage Profile</title>
+    <link rel="stylesheet" href="{% static 'css/manageprofile.css' %}">
+
+</head>
+<body>
+    <header>
+        <h2 style="color:white">Manage Profile</h2>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+               
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+               
+            </ul>
+        </nav>
+    </header>
+    <div class="login-container">
+ 
+        <form method="POST" action="{% url 'manageprofile' %}" id="manage-profile-form">
+            {% csrf_token %}
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+            <div class="input-group">
+                <label for="username">Name</label>
+                <input type="text" id="username" name="username" value="{{ user.name }}" required>
+            </div>
+           
+            <div class="input-group">
+                <label for="email">Email ID</label>
+                <input type="email" id="email" name="email" value="{{ student.email }}" required>
+                <span id="email-error" style="color: red; display: none;">Invalid email address. Please use your RIT email.</span>
+            </div>
+           
+            <div class="input-group">
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country" value="{{ user.country }}" required>
+            </div>        
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" value={{user.password}} required>
+            </div>
+           
+            <button type="submit" id="savebutton">Save Changes</button>
+        </form>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const emailInput = document.getElementById("email");
+                const yearOfStudyInput = document.getElementById("yearofstudy");
+                const departmentSelect = document.getElementById("department");
+                const registerButton = document.getElementById("registerbutton");
+                const emailError = document.getElementById("email-error");
+                const yearError = document.getElementById("year-error");
+                const phoneInput = document.getElementById("phone");
+                const phoneError = document.getElementById("phone-error");
+   
+                function validateEmail() {
+                    const email = emailInput.value.trim();
+                    const emailPattern = /^[a-zA-Z0-9]+@rit\.ac\.in$/;
+                    if (emailPattern.test(email)) {
+                        emailError.style.display = "none";
+                        return true;
+                    } else {
+                        emailError.style.display = "inline";
+                        return false;
+                    }
+                }
+   
+   
+               
+   
+                function enableRegisterButton() {
+                    const isEmailValid = validateEmail();
+                   
+                }
+   
+               
+                // Initial check to disable the button on page load
+                registerButton.disabled = true;
+            });
+           </script>
+    </div>
+</body>
+</html>
