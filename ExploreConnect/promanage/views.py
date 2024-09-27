@@ -14,4 +14,4 @@ def manageprofile(request):
         messages.success(request, 'Profile updated successfully!')
         return redirect('manageprofile')
 
-    return render(request, 'manageprofile.html', {'user': user})
+    return render(request, 'profile.html', {'user': user})
