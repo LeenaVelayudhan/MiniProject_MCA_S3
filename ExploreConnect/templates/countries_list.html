@@ -1,0 +1,7 @@
+{% for country in countries %}
+    <div class="country">
+        <img src="{{ country.image }}" alt="{{ country.name }}">
+        <h2><a href="#" class="country-link" data-country-id="{{ country.id }}">{{ country.name }}</a></h2>
+        <p>{{ country.description }}</p>
+    </div>
+{% endfor %}

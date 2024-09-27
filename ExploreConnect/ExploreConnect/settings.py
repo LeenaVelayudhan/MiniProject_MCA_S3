@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'home',
     'users',
     'Ltranslation',
+    'scraper'
 
 
 ]
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'users.middleware.NoCacheMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'ExploreConnect.urls'

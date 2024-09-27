@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     statusElement.textContent = 'Status: Error';
                 }
             } else {
-                resultElement.textContent = 'Error: audio_path is missing or audio element not found';
+                resultElement.textContent = 'Output language is not selected';
                 statusElement.textContent = 'Status: Error';
             }
         })
@@ -181,5 +181,17 @@ document.addEventListener('DOMContentLoaded', function () {
             resultElement.textContent = 'An error occurred during translation.';
             statusElement.textContent = `Status: ${error.message}`;
         });
+        recognition.onerror = (event) => {
+            if (event.error === 'network') {
+                statusElement.textContent = 'Error: Network issue during speech recognition. Please check your internet connection.';
+            } else if (event.error === 'not-allowed') {
+                statusElement.textContent = 'Error: Microphone access denied.';
+            } else if (event.error === 'language-not-supported') {
+                statusElement.textContent = 'Error: The selected language is not supported for speech recognition.';
+            } else {
+                statusElement.textContent = `Error: ${event.error}`;
+            }
+        };
+        
     });
 });

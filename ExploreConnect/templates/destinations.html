@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Destinations</title>
+    <style>
+        .country { transition: transform 0.3s ease; }
+        .country:hover { transform: scale(1.05); }
+        /* Add your CSS animations or transitions */
+      
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <!-- Navbar for continents -->
+            <ul id="continent-navbar">
+                {% for continent in continents %}
+                    <li><a href="#" data-continent-id="{{ continent.id }}">{{ continent.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Section for all countries (filtered by continent if needed) -->
+    <div id="countries-list">
+        {% for country in countries %}
+            <div class="country">
+                <img src="{{ country.image }}" alt="{{ country.name }}">
+                <h2><a href="#" class="country-link" data-country-id="{{ country.id }}">{{ country.name }}</a></h2>
+                <p>{{ country.description }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Section for country details -->
+    <div id="country-detail">
+        <!-- Detailed information will be dynamically loaded here -->
+    </div>
+
+    <script>
+        // AJAX to filter countries by continent
+        $('#continent-navbar a').on('click', function(e) {
+            e.preventDefault();
+            const continentId = $(this).data('continent-id');
+            $.get(`/continent/${continentId}/`, function(data) {
+                $('#countries-list').html(data);
+            });
+        });
+
+        // AJAX to load country details
+        $(document).on('click', '.country-link', function(e) {
+            e.preventDefault();
+            const countryId = $(this).data('country-id');
+            $.get(`/country/${countryId}/`, function(data) {
+                $('#country-detail').html(data);
+            });
+        });
+    </script>
+</body>
+</html>

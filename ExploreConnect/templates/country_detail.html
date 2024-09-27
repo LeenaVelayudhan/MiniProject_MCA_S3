@@ -1,0 +1,17 @@
+<h1>{{ country.name }}</h1>
+<img src="{{ country.image }}" alt="{{ country.name }}">
+<p>{{ country.description }}</p>
+
+<h2>Attractions</h2>
+<ul>
+    {% for attraction in attractions %}
+        <li>{{ attraction.name }}: {{ attraction.description }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Accommodations</h2>
+<ul>
+    {% for accommodation in accommodations %}
+        <li>{{ accommodation.name }}: {{ accommodation.description }}</li>
+    {% endfor %}
+</ul>
