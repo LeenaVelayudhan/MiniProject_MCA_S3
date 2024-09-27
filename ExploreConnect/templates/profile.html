@@ -42,10 +42,7 @@
                 <span id="email-error" style="color: red; display: none;">Invalid email address. Please use your RIT email.</span>
             </div>
            
-            <div class="input-group">
-                <label for="country">Country</label>
-                <input type="text" id="country" name="country" value="{{ user.country }}" required>
-            </div>        
+                   
             <div class="input-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" value={{user.password}} required>
@@ -57,13 +54,9 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const emailInput = document.getElementById("email");
-                const yearOfStudyInput = document.getElementById("yearofstudy");
-                const departmentSelect = document.getElementById("department");
                 const registerButton = document.getElementById("registerbutton");
                 const emailError = document.getElementById("email-error");
-                const yearError = document.getElementById("year-error");
-                const phoneInput = document.getElementById("phone");
-                const phoneError = document.getElementById("phone-error");
+                
    
                 function validateEmail() {
                     const email = emailInput.value.trim();
