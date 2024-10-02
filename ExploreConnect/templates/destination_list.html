@@ -1,9 +1,0 @@
-    {% extends "home.html" %}
-    {% block content %}
-    <h1>Destinations in {{ continent }}</h1>
-    <ul>
-        {% for destination in destinations %}
-        <li><a href="{% url 'destination_detail' destination.pk %}">{{ destination.name }}</a></li>
-        {% endfor %}
-    </ul>
-    {% endblock %}

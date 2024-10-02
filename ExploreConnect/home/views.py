@@ -15,7 +15,18 @@ from collections import defaultdict
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 from django.conf import settings
-
+def Weather(request):
+    return render(request, 'Weather.html')
+def Explore(request):
+    return render(request, 'display.html')
+def Hotels(request):
+    return render(request, 'hotels.html')
+def ThingstoDo(request):
+    return render(request, 'thingstodo.html')
+def Restaurants(request):
+    return render(request, 'res.html')
+def search(request):
+    return render(request, 'search.html')
 
 def destination(request):
     destinations = Destination.objects.all()  # Replace this with your actual query

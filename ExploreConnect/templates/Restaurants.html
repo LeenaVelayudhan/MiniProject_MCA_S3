@@ -1,0 +1,18 @@
+<h1>Destinations</h1>
+
+<div class="destination-list">
+    {% for destination in destinations %}
+    <div class="destination-item">
+        <h2><a href="{{ destination.link }}" target="_blank">{{ destination.title }}</a></h2>
+        {% if destination.image %}
+        <img src="{{ destination.image }}" alt="{{ destination.title }}">
+        {% endif %}
+        {% if destination.description %}
+        <p>{{ destination.description }}</p>
+        {% else %}
+        <p>No description available.</p>
+        {% endif %}
+    </div>
+    
+    {% endfor %}
+</div>

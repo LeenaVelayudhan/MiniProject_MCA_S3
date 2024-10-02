@@ -23,7 +23,7 @@ def forgot_password(request):
 
         try:
             # Attempt to get the Profile object associated with the user
-            profile_obj = Profile.objects.get(user=user)
+            profile_obj = manageProfile.objects.get(user=user)
         except Profile.DoesNotExist:
             # Handle the case where the Profile does not exist
             messages.error(request, 'Profile for this user does not exist.')

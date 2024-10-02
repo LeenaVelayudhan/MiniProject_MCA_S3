@@ -1,21 +1,14 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Continent, Country
+# views.py
+from django.shortcuts import render
+from .scraper import fetch_lonely_planet_html  # Import the function from scraper.py
 
-def destinations_view(request):
-    continents = Continent.objects.all()
-    countries = Country.objects.all()
-    return render(request, 'destinations.html', {'continents': continents, 'countries': countries})
+def destination_list_view(request):
+    # Fetch the HTML content using the function in scraper.py
+    raw_html = fetch_lonely_planet_html()
 
-def filter_by_continent(request, continent_id):
-    countries = Country.objects.filter(continent_id=continent_id)
-    return render(request, 'countries_list.html', {'countries': countries})
+    # Pass the HTML content to the template
+    context = {
+        'raw_html': raw_html
+    }
 
-def country_detail_view(request, country_id):
-    country = get_object_or_404(Country, id=country_id)
-    attractions = country.attraction_set.all()
-    accommodations = country.accommodation_set.all()
-    return render(request, 'country_detail.html', {
-        'country': country,
-        'attractions': attractions,
-        'accommodations': accommodations
-    })
+    return render(request, 'display.html', context)

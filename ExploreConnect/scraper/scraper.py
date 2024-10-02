@@ -1,74 +1,19 @@
-from scraper.models import Continent, Country
+# scraper.py
 import requests
-from bs4 import BeautifulSoup
 
-def scrape_and_save():
-    url = "https://www.lonelyplanet.com/destinations"
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    response = requests.get(url, headers=headers)
+def fetch_lonely_planet_html():
+    url = 'https://www.lonelyplanet.com/destinations'
     
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.content, "lxml")
+    try:
+        # Fetch the page content using requests
+        response = requests.get(url)
         
-        for continent_tag in soup.select('a.continent-link'):
-            continent_name = continent_tag.text.strip()
-            continent_url = "https://www.lonelyplanet.com" + continent_tag['href']
-            
-            # Save continent to DB
-            continent, created = Continent.objects.get_or_create(name=continent_name, url=continent_url)
-
-            # Scrape countries in the continent
-            continent_response = requests.get(continent_url, headers=headers)
-            continent_soup = BeautifulSoup(continent_response.content, "lxml")
-            
-            for country_tag in continent_soup.select('a.card__link'):
-                country_name = country_tag.text.strip()
-                country_url = "https://www.lonelyplanet.com" + country_tag['href']
-                country_image = country_tag.find('img')['src'] if country_tag.find('img') else ''
-                country_description = country_tag.find('p', class_='description').text.strip() if country_tag.find('p', class_='description') else 'No description available.'
-
-                # Save country to DB
-                Country.objects.get_or_create(
-                    name=country_name,
-                    continent=continent,
-                    description=country_description,
-                    image=country_image,
-                    url=country_url
-                )
-
-def scrape_and_save():
-    url = "https://www.lonelyplanet.com/destinations"
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.content, "lxml")
-        
-        # Loop through continents
-        for continent_tag in soup.select('a.continent-link'):
-            continent_name = continent_tag.text.strip()
-            continent_url = "https://www.lonelyplanet.com" + continent_tag['href']
-            
-            # Save continent to DB
-            continent, created = Continent.objects.get_or_create(name=continent_name, url=continent_url)
-
-            # Scrape countries in the continent
-            continent_response = requests.get(continent_url, headers=headers)
-            continent_soup = BeautifulSoup(continent_response.content, "lxml")
-            
-            for country_tag in continent_soup.select('a.card__link'):
-                country_name = country_tag.text.strip()
-                country_url = "https://www.lonelyplanet.com" + country_tag['href']
-                country_image = country_tag.find('img')['src'] if country_tag.find('img') else ''
-                country_description = country_tag.find('p', class_='description').text.strip() if country_tag.find('p', class_='description') else 'No description available.'
-
-                # Save country to DB
-                Country.objects.get_or_create(
-                    name=country_name,
-                    continent=continent,
-                    description=country_description,
-                    image=country_image,
-                    url=country_url
-                )
-    else:
-        print(f"Failed to retrieve data. Status code: {response.status_code}")
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Return the raw HTML of the page
+            return response.text  # Return the HTML content as a string
+        else:
+            return f"Failed to retrieve the page. Status code: {response.status_code}"
+    
+    except Exception as e:
+        return f"Error occurred: {e}"
