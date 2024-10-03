@@ -1,14 +1,9 @@
-# views.py
 from django.shortcuts import render
-from .scraper import fetch_lonely_planet_html  # Import the function from scraper.py
+from .scraper import scrape_places  # Import the scraping function
 
-def destination_list_view(request):
-    # Fetch the HTML content using the function in scraper.py
-    raw_html = fetch_lonely_planet_html()
+def display_places(request):
+    # Call the scraping function to get the data
+    places_data = scrape_places()
 
-    # Pass the HTML content to the template
-    context = {
-        'raw_html': raw_html
-    }
-
-    return render(request, 'display.html', context)
+    # Pass the data to the template
+    return render(request, 'places.html', {'places': places_data})

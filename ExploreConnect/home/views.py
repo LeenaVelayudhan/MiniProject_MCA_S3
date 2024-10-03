@@ -15,6 +15,15 @@ from collections import defaultdict
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 from django.conf import settings
+from .home import scrape_places  # Import the scraping function
+
+def display_places(request):
+    # Call the scraping function to get the data
+    places_data = scrape_places()
+
+    # Pass the data to the template
+    return render(request, 'places.html', {'places': places_data})
+
 def Weather(request):
     return render(request, 'Weather.html')
 def Explore(request):

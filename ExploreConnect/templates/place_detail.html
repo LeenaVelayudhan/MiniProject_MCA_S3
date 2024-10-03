@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ place.text }} - Details</title>
+    <style>
+        .detail-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .detail-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .description {
+            margin-top: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="detail-container">
+        <h1>{{ place.text }} - {{ place.country }}</h1>
+        <img src="{{ place.image_url }}" alt="{{ place.text }}">
+        <div class="description">
+            <p>{{ place.description }}</p>
+        </div>
+    </div>
+
+</body>
+</html>

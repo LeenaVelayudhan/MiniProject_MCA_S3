@@ -2,29 +2,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Translation</title>
-    <link rel="stylesheet" href="{% static 'css/style3.css' %}">
+<title>Explore Connect</title>
+<meta charset="utf-8">
+<link rel="icon" href="{% static 'images/favicon.ico' %}">
+<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/slider.css' %}">
+<link rel="stylesheet" href="{% static 'css/style3.css' %}">
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery-migrate-1.1.1.js' %}"></script>
+<script src="{% static 'js/superfish.js' %}"></script>
+<script src="{% static 'js/sForm.js' %}"></script>
+<script src="{% static 'js/jquery.jqtransform.js' %}"></script>
+<script src="{% static 'js/jquery.equalheights.js' %}"></script>
+<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+<script src="{% static 'js/tms-0.4.1.js' %}"></script>
+<script src="{% static 'js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+<script src="{% static 'js/jquery.ui.totop.js' %}"></script>
+<script>
+$(window).load(function () {
+    $('.slider')._TMS({
+        show: 0,
+        pauseOnHover: false,
+        prevBu: '.prev',
+        nextBu: '.next',
+        playBu: false,
+        duration: 800,
+        preset: 'random',
+        pagination: false, //'.pagination',true,'<ul></ul>'
+        pagNums: false,
+        slideshow: 8000,
+        numStatus: false,
+        banners: true,
+        waitBannerAnimation: false,
+        progressBar: false
+    });
+    $("#tabs").tabs();
+    $().UItoTop({
+        easingType: 'easeOutQuart'
+    });
+});
+</script>
 </head>
-<body>
+    <body>
     <form  method="post">
         {% csrf_token %}
-    <div class="navbar">
-        <div class="logo">ExploreConnect</div>
-        <ul class="nav-links">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'destination' %}">Destinations</a></li>
-            <li><a href="{% url 'profile' %}">User Profile</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-        <div class="search-bar">
-            <input type="text" placeholder="Search places...">
-            <button>Search</button>
-        </div>
-    </div>
+        <header>
+            
+            <div class="container_12">
+              <div class="grid_12">
+                <h1><a href="home.html"><img src="{% static 'images/logo.png' %}"  alt=""></a></h1>
+                <div class="clear"></div>
+              </div>
+              <div class="menu_block">
+                <nav>
+                  <ul class="sf-menu">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li class="with_ul"><a href="{% url 'Explore' %}">Explore</a>
+                      <ul>
+                          <li><a href="{% url 'Hotels' %}">Hotels</a></li>
+                          <a href="{% url 'ThingstoDo' %}">Things to Do</a>
+                          <li><a href="{% url 'Restaurants' %}">Restaurants</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="{% url 'Weather' %}">Weather</a></li>
+                    <li><a href="{% url 'destination' %}">Destinations</a></li>
+                    <li  class="current"><a href="{% url 'language_translation' %}">Translation</a></li>
+                    <li><a href="{% url 'search' %}">Search</a></li>  
+                  </ul>
+                </nav>
+                <div class="clear"></div>
+              </div>
+              <div class="clear"></div>
+            </div>
+          </header>
 
-
+        <div class="container_12">
+            <div class="grid_12">
+              <div class="slider-relative">
+                <div class="slider-block">
+          
     <div class="content">
         <h1>Language Translation</h1>
         <div class="language-selection">
@@ -45,8 +103,8 @@
                     </select>
                 </div>
 
-                </div>
-
+    </div>
+<div class="button">
             <button id="start_speaking" type="button">🎤 Start Speaking</button>
             <button id="stop_speaking" type="button">🛑 Stop Speaking</button>
             <button id="translate_button" type="button">🔄 Translate</button>
@@ -54,14 +112,26 @@
             <p id="translation_result">
                 <audio id="translated_audio" controls style="display: none;"></audio>
             </p>
+        </div>
+        </div>
+        </div>
         </label>  
         </div>
-
-    </form>
-    <footer class="footer-translation">
-        &copy; 2024 ExploreConnect. All rights reserved.
-    </footer>
+        </div>
+        
 
     <script src="{% static 'js/translation.js' %}"></script>
 </body>
+    <footer>
+        <div class="container_12">
+          <div class="grid_12">
+            <div class="socials"> <a href="#"></a> <a href="#"></a> <a href="#"></a> <a href="#"></a> </div>
+            <div class="copy"> Journey &copy; 2045 | <a href="#">Privacy Policy</a> | Design by: <a href="http://www.templatemonster.com/">TemplateMonster.com</a> </div>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </footer>
+    </form>
+
+
 </html>

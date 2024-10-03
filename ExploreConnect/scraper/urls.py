@@ -1,7 +1,6 @@
-# urls.py
 from django.urls import path
-from . import views
+from .views import display_places
 
 urlpatterns = [
-    path('destinations/', views.destination_list_view, name='destination_list'),
+    path('places/', display_places, name='places'),
 ]
