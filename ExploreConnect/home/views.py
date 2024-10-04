@@ -24,6 +24,7 @@ def display_places(request):
     # Pass the data to the template
     return render(request, 'places.html', {'places': places_data})
 
+
 def Weather(request):
     return render(request, 'Weather.html')
 def Explore(request):

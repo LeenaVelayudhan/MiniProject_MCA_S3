@@ -40,11 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'home',
     'users',
-    'Ltranslation',
-    'scraper',
     
-
-
 ]
 
 MIDDLEWARE = [
