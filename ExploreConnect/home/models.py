@@ -1,5 +1,11 @@
 from django.db import models
 
+
+# Create your models here.
+class AudioModel(models.Model):
+    audioname=models.CharField(max_length=500)
+    audio=models.FileField(upload_to='audio')
+
 class Destination(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()

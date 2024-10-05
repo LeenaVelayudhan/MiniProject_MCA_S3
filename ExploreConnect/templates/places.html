@@ -27,10 +27,13 @@ $(window).load(function () {
 </script>
     <style>
         .place-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the rows horizontally */
+    gap: 20px; /* Add some space between the cards */
+    margin-top: 20px;
+  }
+
         .place-card {
             border: 1px solid #ddd;
             padding: 20px;
@@ -45,6 +48,32 @@ $(window).load(function () {
         .place-card h3 {
             margin-top: 10px;
         }
+        /* Style for the image container */
+.image-container {
+    position: relative;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 40px; /* Space between image and cards */
+}
+
+.image-container img {
+    width: 100%; /* Ensure image takes up the full width */
+    height: auto;
+    border-radius: 8px; /* Optional: Adds rounded corners to the image */
+}
+
+/* Style for the text overlay inside the image */
+.text-overlay {
+    position: absolute;
+    top: 50%; /* Center the text vertically */
+    left: 50%; /* Center the text horizontally */
+    transform: translate(-50%, -50%); /* Ensure perfect centering */
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add a shadow for better readability */
+}
+
     </style>
 </head>
 <body>
@@ -78,15 +107,24 @@ $(window).load(function () {
         </header>
         <div class="main">
             <div class="content">
+            </div class="grid_12">
               <div class="container_12">
-    <h1 >Where To Next</h1>
+              
+                <div class="image-container">
+                  <img src="{% static 'images/place.jpg' %}" alt="Travel Destinations">
+                  <!-- Text inside the image -->
+                  <div class="text-overlay">
+                      Discover your next adventure
+                  </div>
+              </div></div>
     <div class="place-container">
         {% for place in places %}
         <div class="place-card">
-            <img src="{{ place.image_url }}" alt="{{ place.text }}" onerror="this.src='default-image.jpg';">
-            <h3>{{ place.text }}</h3>
-            <p>{{ place.description }}</p>
-            <a href="https://www.lonelyplanet.com{{ place.href }}" target="_blank">View Details</a>
+          <a href="{% url 'details' place.href %}">
+            <img src="{{ place.image_url }}" alt="{{ place.destination_name }}" onerror="this.src='default-image.jpg';">
+          </a>
+          <h3>{{ place.destination_name }}</h3>
+          <a href="{% url 'country_details' place.href %}" class="country-link">{{ place.country_name }}</a>
         </div>
         {% endfor %}
     </div></div>

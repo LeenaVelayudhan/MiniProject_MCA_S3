@@ -25,7 +25,8 @@
     
 
     <div class="detail-container">
-        <h1>{{ place.text }} - {{ place.country }}</h1>
+        <h1>{{ place.text }} </h1>
+        <a href="{% url 'country_details' place.href %}" class="country-link">{{ place.country_name }}</a>
         <img src="{{ place.image_url }}" alt="{{ place.text }}">
         <div class="description">
             <p>{{ place.description }}</p>

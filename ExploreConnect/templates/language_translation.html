@@ -30,7 +30,7 @@ $(window).load(function () {
         playBu: false,
         duration: 800,
         preset: 'random',
-        pagination: false, //'.pagination',true,'<ul></ul>'
+        pagination: false,
         pagNums: false,
         slideshow: 8000,
         numStatus: false,
@@ -44,94 +44,156 @@ $(window).load(function () {
     });
 });
 </script>
+<style>
+    .content {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    /* Buttons */
+    button {
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .button {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .button p {
+        font-size: 16px;
+    }
+
+    /* Dropdown styling */
+    select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* Status and audio */
+    #status, #translation_result {
+        margin-top: 20px;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    #translated_audio {
+        margin-top: 10px;
+    }
+
+    /* Reposition status and audio */
+    .result-section {
+        margin-top: 20px;
+        text-align: center;
+        font-size: xx-large;
+        font-weight: bold;
+    }
+
+</style>
 </head>
-    <body>
-    <form  method="post">
+<body>
+    <form method="post">
         {% csrf_token %}
         <header>
-            
             <div class="container_12">
-              <div class="grid_12">
-                <h1><a href="home.html"><img src="{% static 'images/logo.png' %}"  alt=""></a></h1>
+                <div class="grid_12">
+                    <h1><a href="home.html"><img src="{% static 'images/logo.png' %}" alt=""></a></h1>
+                    <div class="clear"></div>
+                </div>
+                <div class="menu_block">
+                    <nav>
+                        <ul class="sf-menu">
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li class="with_ul"><a href="{% url 'Explore' %}">Explore</a>
+                                <ul>
+                                    <li><a href="{% url 'Hotels' %}">Hotels</a></li>
+                                    <a href="{% url 'ThingstoDo' %}">Things to Do</a>
+                                    <li><a href="{% url 'Restaurants' %}">Restaurants</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'Weather' %}">Weather</a></li>
+                            <li><a href="{% url 'places' %}">Destinations</a></li>
+                            <li class="current"><a href="{% url 'language_translation' %}">Translation</a></li>
+                            <li><a href="{% url 'search' %}">Search</a></li>  
+                        </ul>
+                    </nav>
+                    <div class="clear"></div>
+                </div>
                 <div class="clear"></div>
-              </div>
-              <div class="menu_block">
-                <nav>
-                  <ul class="sf-menu">
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li class="with_ul"><a href="{% url 'Explore' %}">Explore</a>
-                      <ul>
-                          <li><a href="{% url 'Hotels' %}">Hotels</a></li>
-                          <a href="{% url 'ThingstoDo' %}">Things to Do</a>
-                          <li><a href="{% url 'Restaurants' %}">Restaurants</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="{% url 'Weather' %}">Weather</a></li>
-                    <li><a href="{% url 'places' %}">Destinations</a></li>
-                    <li  class="current"><a href="{% url 'language_translation' %}">Translation</a></li>
-                    <li><a href="{% url 'search' %}">Search</a></li>  
-                  </ul>
-                </nav>
-                <div class="clear"></div>
-              </div>
-              <div class="clear"></div>
             </div>
-          </header>
+        </header>
 
         <div class="container_12">
             <div class="grid_12">
-              <div class="slider-relative">
-                <div class="slider-block">
-          
-    <div class="content">
-        <h1>Language Translation</h1>
-        <div class="language-selection">
-            <label for="input_langguage=text"> 
-            <div class="dropdowns">
-                <div class="dropdown" >
-                    <label id="input-language-text"> Input Language:</label>
-                    <select id="input-language"  readonly style="width: 150px;">
-                        <option value="">Select language</option>
-                    </select>
-                    </label> 
+                <div class="slider-relative">
+                    <div class="slider-block">
+                        <div class="content">
+                            <h1>Language Translation</h1>
+                            <div class="language-selection">
+                                <div class="dropdowns">
+                                    <div class="dropdown">
+                                        <label id="input-language-text"> Input Language:</label>
+                                        <select id="input-language" readonly style="width: 150px;">
+                                            <option value="">Select language</option>
+                                        </select>
+                                    </div>
+                                    <button id="swap_languages" type="button">⇆</button>
+                                    <div class="dropdown dropdown2">
+                                        <label id="output-language-text">Output Language:</label>
+                                        <select id="output-language" readonly style="width: 150px;">
+                                            <option value="">Select language</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="button">
+                                    <button id="start_speaking" type="button">🎤 Start Speaking</button>
+                                    <button id="stop_speaking" type="button">🛑 Stop Speaking</button>
+                                    <button id="translate_button" type="button">🔄 Translate</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Status and result section -->
+                            <div class="result-section">
+                                <p id="status">Status: Not Speaking</p>
+                                <p id="translation_result">
+                                    <audio id="translated_audio" controls style="display: none;"></audio>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button id="swap_languages" type="button">⇆ </button>
-                <div class="dropdown dropdown2">
-                    <label id="output-language-text">Output Language:</label>
-                    <select id="output-language"  readonly style="width: 150px;">
-                        <option value="">Select language</option>
-                    </select>
-                </div>
+            </div>
+        </div>
 
-    </div>
-<div class="button">
-            <button id="start_speaking" type="button">🎤 Start Speaking</button>
-            <button id="stop_speaking" type="button">🛑 Stop Speaking</button>
-            <button id="translate_button" type="button">🔄 Translate</button>
-            <p id="status">Status: Not Speaking</p>
-            <p id="translation_result">
-                <audio id="translated_audio" controls style="display: none;"></audio>
-            </p>
-        </div>
-        </div>
-        </div>
-        </label>  
-        </div>
-        </div>
-        
-
-    <script src="{% static 'js/translation.js' %}"></script>
-</body>
-    <footer>
-        <div class="container_12">
-          <div class="grid_12">
-            <div class="socials"> <a href="#"></a> <a href="#"></a> <a href="#"></a> <a href="#"></a> </div>
-            <div class="copy"> Journey &copy; 2045 | <a href="#">Privacy Policy</a> | Design by: <a href="http://www.templatemonster.com/">TemplateMonster.com</a> </div>
-          </div>
-          <div class="clear"></div>
-        </div>
-      </footer>
+        <script src="{% static 'js/translation.js' %}"></script>
     </form>
 
-
+    <footer>
+        <div class="container_12">
+            <div class="grid_12">
+                <div class="socials">
+                    <a href="#"></a> <a href="#"></a> <a href="#"></a> <a href="#"></a>
+                </div>
+                <div class="copy">
+                    Journey &copy; 2045 | <a href="#">Privacy Policy</a> | Design by: <a href="http://www.templatemonster.com/">TemplateMonster.com</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </footer>
+</body>
 </html>

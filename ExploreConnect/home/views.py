@@ -19,10 +19,26 @@ from .home import scrape_places  # Import the scraping function
 
 def display_places(request):
     # Call the scraping function to get the data
-    places_data = scrape_places()
+    places = scrape_places()  # Fetch the scraped data
+    return render(request, 'places.html', {'places': places})
 
-    # Pass the data to the template
-    return render(request, 'places.html', {'places': places_data})
+def details(request, href):
+    places = scrape_places()  # Fetch the scraped data
+    place = next((p for p in places if p['href'] == href), None)
+    
+    if place:
+        return render(request, 'places_list.html', {'place': place})
+    else:
+        return render(request, '404.html', status=404)
+
+def country_details(request, href):
+    places = scrape_places()  # Fetch the scraped data
+    place = next((p for p in places if p['href'] == href), None)
+    
+    if place:
+        return render(request, 'country_details.html', {'place': place})
+    else:
+        return render(request, '404.html', status=404)
 
 
 def Weather(request):
@@ -95,8 +111,10 @@ def translate_audio(request):
             audio_filename = f"{uuid.uuid4()}.mp3"
             audio_filepath = os.path.join(settings.MEDIA_ROOT, audio_filename)
             tts.save(audio_filepath)
+            print(f"Audio_path: {audio_filepath}")
 
             return JsonResponse({
+                
                 'translated_text': translated_text,
                 'audio_path': f'/media/{audio_filename}'
             })

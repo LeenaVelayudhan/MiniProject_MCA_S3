@@ -43,22 +43,20 @@ h1 {
     max-width: 900px;
     align-items: center;
     margin: 20px auto;
-    background-color: rgb(253, 250, 249);
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
 }
 .language-selection {
     padding: 20px;
     padding-bottom: 50px;
-    background-color: #cc9f9f;
+    margin-top: 190px;
     color: #080808;
-    font-size: medium;
+    font-size: x-large;
     font: weight 600px;;
-    padding-top: 20px;
+    padding-top: 2px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 80px;
+   
     align-items: center;
 
 }
@@ -74,14 +72,14 @@ h1 {
   padding-left: 25px;
 }
 .language-selection button{
-  margin: 0 5px;
+  margin: 0 100px;
 }
 
 .dropdowns {
     
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
 }
 .dropdowns button{
   padding-top: 2px;
@@ -115,15 +113,6 @@ h1 {
 
 
 
-
-/* Global Styling */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
 
 
 

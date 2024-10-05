@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        fetch('/homelanguage_translation/translate_audio/', {
+        fetch('/language_translation/translate_audio/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     statusElement.textContent = 'Status: Error';
                 }
             } else {
-                resultElement.textContent = 'Output language is not selected';
+                resultElement.textContent = 'the out put Language is not selected';
                 statusElement.textContent = 'Status: Error';
             }
         })
