@@ -51,7 +51,7 @@ h1 {
     color: #080808;
     font-size: x-large;
     font: weight 600px;;
-    padding-top: 2px;
+    padding-top: 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,6 +70,7 @@ h1 {
 }
 .language-selection button{
   margin: 0 100px;
+  padding-bottom: 10px;
 }
 
 .dropdowns {
@@ -81,7 +82,7 @@ h1 {
 .dropdowns button{
   padding-top: 2px;
   padding-bottom: 2px;
-  margin-top: 25px;
+  margin-top: 50px;
   margin-bottom: 25px;
 }
 .dropdown{
