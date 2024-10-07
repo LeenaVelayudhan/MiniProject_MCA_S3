@@ -1,18 +1,52 @@
-<h1>Destinations</h1>
+<!-- restaurant_list.html -->
 
-<div class="destination-list">
-    {% for destination in destinations %}
-    <div class="destination-item">
-        <h2><a href="{{ destination.link }}" target="_blank">{{ destination.title }}</a></h2>
-        {% if destination.image %}
-        <img src="{{ destination.image }}" alt="{{ destination.title }}">
-        {% endif %}
-        {% if destination.description %}
-        <p>{{ destination.description }}</p>
-        {% else %}
-        <p>No description available.</p>
-        {% endif %}
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants in {{ city }}</title>
+    <style>
+        .restaurant-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .restaurant-card img {
+            max-width: 100px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .restaurant-card h3 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Restaurants in {{ city }}</h1>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Restaurants in {{ place }}</title>
+    </head>
+    <body>
+        <h1>Restaurants in {{ place }}</h1>
+        
+        <ul>
+            {% for restaurant in restaurants %}
+                <li>
+                    <h3>{{ restaurant.name }}</h3>
+                    <img src="{{ restaurant.image_url }}" alt="{{ restaurant.name }}">
+                    <p>{{ restaurant.description }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </body>
+    </html>
     
-    {% endfor %}
-</div>
+</body>
+</html>

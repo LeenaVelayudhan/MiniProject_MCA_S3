@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ place.country_name }} - Country Details</title>
+    <title>{{ place.continent_name }} - Continent Details</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,11 +41,10 @@
 <body>
 
     <div class="detail-container">
-        <h3>{{ place.country_image_url}}</h3>
-        <h1>{{ place.country_name }}</h1>
-        <a href="{% url 'continent_details' place.href %}" class="continent-link">{{ place.continent_name }}</a>
+        <h3>{{ place.continent_image}}</h3>
+        <h1>{{ place.continent_name }}</h1>
         <div class="description">
-            <p>{{ place.country_description }}</p>
+            <p>{{ place.description }}</p>
         </div>
     </div>
 

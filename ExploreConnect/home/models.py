@@ -1,4 +1,18 @@
+
+# models.py
 from django.db import models
+
+class Destination(models.Model):
+    destination_name = models.CharField(max_length=255)
+    country_name = models.CharField(max_length=255)
+    continent_name = models.CharField(max_length=255)
+    continent_description = models.TextField()
+    destination_description = models.TextField()
+    image_url = models.URLField()
+    weather_data = models.JSONField(null=True, blank=True)  # To store weather data
+
+    def __str__(self):
+        return f"{self.destination_name}, {self.country_name}"
 
 
 # Create your models here.
@@ -6,22 +20,8 @@ class AudioModel(models.Model):
     audioname=models.CharField(max_length=500)
     audio=models.FileField(upload_to='audio')
 
-class Destination(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    continent = models.CharField(max_length=100)
-    slideshow_images = models.ManyToManyField('SlideshowImage', related_name='destinations', blank=True)
-
-    def __str__(self):
-        return self.name
 
 
-class SlideshowImage(models.Model):
-    image = models.ImageField(upload_to='slideshow_images/')
-    alt_text = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.alt_text
 
 
 class Attraction(models.Model):

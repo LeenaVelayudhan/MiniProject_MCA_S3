@@ -38,18 +38,26 @@
         <div class="description">
             <p>{{ place.destination_description }}</p>
         </div>
+        
         <a href="{% url 'fetch_tripadvisor' place=place.destination_name %}">Restaurants</a>
+
         <div class="place-container">
             {% for attraction in attractions %}
                 <div class="place-card">
-                    <a href="{% url 'attraction_details' place.destination_name %}"> <!-- Updated href for attraction -->
+                    <a href="{% url 'attraction_details' place.destination_name %}">
                         <img src="{{ attraction.image_url }}" alt="{{ attraction.attraction_name }}" onerror="this.src='default-image.jpg';">
                     </a>
                     <div>
-                        <h3>{{ attraction.attraction_name }}</h3> <!-- Displaying attraction name instead -->
+                        <h3>{{ attraction.attraction_name }}</h3>
                     </div>
                 </div>
             {% endfor %}
+        </div>
+
+        <!-- Display the Best Time to Visit Info -->
+        <div class="best-time-to-visit">
+            <h2>Best Time to Visit {{ place.destination_name }}</h2>
+            <p>{{ best_time_info }}</p>  <!-- Output the scraped data -->
         </div>
 
         <form method="POST" action="{% url 'best_time' place.destination_name %}">
@@ -61,3 +69,4 @@
     </div>
 </body>
 </html>
+

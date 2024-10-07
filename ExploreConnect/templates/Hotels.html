@@ -1,7 +1,21 @@
-{% for country in countries %}
-    <div class="country">
-        <img src="{{ country.image }}" alt="{{ country.name }}">
-        <h2><a href="#" class="country-link" data-country-id="{{ country.id }}">{{ country.name }}</a></h2>
-        <p>{{ country.description }}</p>
-    </div>
-{% endfor %}
+<!-- templates/your_app/tripadvisor_results.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TripAdvisor Restaurant Results</title>
+</head>
+<body>
+    <h1>Restaurants </h1>
+
+    <ul>
+        {% for restaurant in data %}
+            <li>
+                <strong>{{ restaurant.name }}</strong><br>
+                {{ restaurant.address_obj.street1 }}, {{ restaurant.address_obj.city }}<br>
+                Rating: {{ restaurant.rating }}<br>
+                Price Level: {{ restaurant.price_level }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

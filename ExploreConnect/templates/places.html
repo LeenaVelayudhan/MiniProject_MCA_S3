@@ -1,4 +1,5 @@
 {% load static %}
+{% include 'loader.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
 <meta charset="utf-8">
 <link rel="icon" href="{% static 'images/favicon.ico' %}">
 <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+<link rel="stylesheet" href="{% static 'css/loader.css' %}">  
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/slider.css' %}">
 <script src="{% static 'js/jquery.js' %}"></script>
@@ -19,12 +21,19 @@
 <script src="{% static 'js/jquery-ui-1.10.3.custom.min.js' %}"></script>
 <script src="{% static 'js/jquery.ui.totop.js' %}"></script>
 <script>
-$(window).load(function () {
-    $().UItoTop({
-        easingType: 'easeOutQuart'
+    $(window).on('load', function () {
+        $('#loader').fadeOut();  // Hide loader when the page is fully loaded
+        $('#content').fadeIn();  // Show the main content
     });
-});
+
+    // Optional: Show the loader when the content is being loaded via AJAX or if needed
+    $(document).on('ajaxStart', function() {
+        $('#loader').fadeIn(); // Show loader when an AJAX request starts
+    }).on('ajaxStop', function() {
+        $('#loader').fadeOut(); // Hide loader when the AJAX request completes
+    });
 </script>
+
     <style>
         .place-container {
     display: flex;
@@ -32,6 +41,7 @@ $(window).load(function () {
     justify-content: center; /* Center the rows horizontally */
     gap: 20px; /* Add some space between the cards */
     margin-top: 20px;
+    margin-bottom: 20px;
   }
 
         .place-card {
@@ -39,6 +49,7 @@ $(window).load(function () {
             padding: 20px;
             width: 300px;
             border-radius: 8px;
+            margin-bottom: 10px;
         }
         .place-card img {
             max-width: 100%;
@@ -46,14 +57,19 @@ $(window).load(function () {
             border-radius: 8px;
         }
         .place-card h3 {
-            margin-top: 10px;
+            margin-top: 5px;
+            margin-bottom: 2px;
+        }
+        .place-card a {
+            margin-top: 3px;
+            
         }
         /* Style for the image container */
 .image-container {
     position: relative;
     text-align: center;
     margin-top: 5px;
-    margin-bottom: 40px; /* Space between image and cards */
+    margin-bottom: 5px; /* Space between image and cards */
 }
 
 .image-container img {
@@ -73,10 +89,17 @@ $(window).load(function () {
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add a shadow for better readability */
 }
+.country-name {
+  font-size: 14px; /* Adjust font size */
+  color: #777; /* Lighter color for country name */
+  margin-top: 5px; /* Space between destination and country names */
+}
+
 
     </style>
 </head>
 <body>
+  <div id="content" style="display:none;">
         <header>
           <div class="container_12">
             <div class="grid_12">
@@ -88,11 +111,13 @@ $(window).load(function () {
                 <ul class="sf-menu">
                   <li ><a href="{% url 'home' %}">Home</a></li>
                   <li class="with_ul"><a href="{% url 'Explore' %}">Explore</a>
+                    
                     <ul>
                         <li><a href="{% url 'Hotels' %}">Hotels</a></li>
                         <a href="{% url 'ThingstoDo' %}">Things to Do</a>
                         <li><a href="{% url 'Restaurants' %}">Restaurants</a></li>
                     </ul>
+                  
                   </li>
                   <li><a href="{% url 'Weather' %}">Weather</a></li>
                   <li class="current"><a href="{% url 'places' %}">Destinations</a></li>
@@ -111,25 +136,44 @@ $(window).load(function () {
               <div class="container_12">
               
                 <div class="image-container">
+                  <div class="pic">
                   <img src="{% static 'images/place.jpg' %}" alt="Travel Destinations">
                   <!-- Text inside the image -->
                   <div class="text-overlay">
                       Discover your next adventure
                   </div>
               </div></div>
-    <div class="place-container">
-        {% for place in places %}
-        <div class="place-card">
-          <a href="{% url 'details' place.href %}">
-            <img src="{{ place.image_url }}" alt="{{ place.destination_name }}" onerror="this.src='default-image.jpg';">
-          </a>
-          <h3>{{ place.destination_name }}</h3>
+             <!-- Search Form -->
+             <form method="GET" action="{% url 'places' %}">
+              <input type="text" name="search" value="{{ search_query }}" placeholder="Search by country or city">
+              <button type="submit">Search</button>
+          </form>
+            
+    
+  <!-- Display List of Places -->
+  <div class="place-container">
+    {% if places %}
+    {% for place in places %}
+    <div class="place-card">
+      <a href="{% url 'details' place.href %}">
+        <img src="{{ place.image_url }}" alt="{{ place.destination_name }}" onerror="this.src='default-image.jpg';">
+        <div>
           <a href="{% url 'country_details' place.href %}" class="country-link">{{ place.country_name }}</a>
         </div>
-        {% endfor %}
-    </div></div>
+      </a>
+      <h3>{{ place.destination_name }}</h3>
+     
+    </div>
+    {% endfor %}
+          
+    {% else %}
+      <p>No destinations found matching your search.</p>
+    {% endif %}
+  </div>
+    </div>
  </div>
 </div>
+  </div>
 </body>
 <footer>
     <div class="container_12">

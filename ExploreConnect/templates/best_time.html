@@ -1,0 +1,11 @@
+{% load static %}
+{% if best_time_info %}
+   
+        <h2>Best Time to Visit {{ place }}</h2>
+        <pre>{{ best_time_info }}</pre>
+    
+{% else %}
+    <p>No information found for {{ place }}.</p>
+{% endif %}
+
+<a href="/">Go back</a>
