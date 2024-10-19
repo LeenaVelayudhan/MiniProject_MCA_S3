@@ -1,0 +1,6 @@
+<h1>Hotels in {{ place.name }}</h1>
+<ul>
+    {% for hotel in hotels %}
+        <li>{{ hotel.name }} - Rating: {{ hotel.rating }} - Price: {{ hotel.price }}</li>
+    {% endfor %}
+</ul>

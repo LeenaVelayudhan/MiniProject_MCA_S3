@@ -1,5 +1,5 @@
 # admin.py
 from django.contrib import admin
-from .models import Destination, Attraction
+# from .models import Destination, Attraction
 
 

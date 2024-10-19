@@ -38,6 +38,12 @@
         <div class="description">
             <p>{{ place.destination_description }}</p>
         </div>
+
+        <form method="POST" action="{% url 'best_time' place.destination_name %}">
+            {% csrf_token %}
+            <button type="submit">Best Time to Visit</button>
+        </form>
+
         <a href="{% url 'fetch_tripadvisor' place=place.destination_name %}">Restaurants</a>
         <div class="place-container">
             {% for attraction in attractions %}

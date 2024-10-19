@@ -34,7 +34,7 @@
         {% if place.country_name %}
             <a href="{% url 'country_details' place.href %}" class="country-link">{{ place.country_name }}</a>
         {% endif %}
-        
+        <p>{{ place.continenet_name }} </p>
         <div class="description">
             <p>{{ place.destination_description }}</p>
         </div>

@@ -1,11 +1,36 @@
 {% load static %}
-{% if best_time_info %}
-   
-        <h2>Best Time to Visit {{ place }}</h2>
-        <pre>{{ best_time_info }}</pre>
+{% if best_time_details %}
+<div class="best-time-section">
+    <h2>Best Time to Visit {{ place.destination_name }}</h2>
     
-{% else %}
-    <p>No information found for {{ place }}.</p>
+    <!-- Loop through each section -->
+    {% for section in best_time_details %}
+        <h3>{{ section.title }}</h3>
+
+        <!-- Loop through the paragraphs in the section -->
+        {% for paragraph in section.paragraphs %}
+            <p>{{ paragraph }}</p>
+        {% endfor %}
+
+        <!-- Loop through the figures in the section -->
+        {% if section.figures %}
+            {% for figure in section.figures %}
+                <figure>
+                    <!-- Display the image if it exists -->
+                    {% if figure.image %}
+                        <img src="{{ figure.image }}" alt="{{ figure.alt }}">
+                    {% endif %}
+                    
+                    <!-- Display the caption if it exists -->
+                    {% if figure.caption %}
+                        <figcaption>{{ figure.caption }}</figcaption>
+                    {% endif %}
+                </figure>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</div>
 {% endif %}
 
+<!-- Back button -->
 <a href="/">Go back</a>

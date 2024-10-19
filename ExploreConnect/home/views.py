@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Destination, Attraction
 from django.http import JsonResponse
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.conf import settings as django_settings
@@ -16,10 +15,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.conf import settings
-from .home import scrape_places,scrape_best_time_to_visit # Import the scraping function
+from .home import scrape_places, extract_best_time_to_visit # Import the scraping function
 from django.shortcuts import render
 import requests
 from bs4 import BeautifulSoup
+from .models import Destination, Country, Continent
 @csrf_exempt
 def search_hotels(request):
     if request.method == 'POST':
@@ -54,7 +54,7 @@ def fetch_restaurants(place):
     # Your RapidAPI key
     headers = {
         "x-rapidapi-host": "tripadvisor-scraper.p.rapidapi.com",
-        "x-rapidapi-key": "YOUR_API_KEY"  # Replace with your actual API key
+        "x-rapidapi-key": "3bfd9b6db6mshafebc9c7a517cd4p1cf6a0jsn3f57eb1026f5"
     }
 
     # Parameters for the API call
@@ -136,25 +136,6 @@ def display_places(request):
         
     })
 
-def best_time(request, place):
-    if request.method == 'POST':
-        # Extract 'href' from the POST data
-        href = request.POST.get('place')
-        
-        # Debug: print the received href
-        print("Received href:", place)  # Temporary debugging print
-        
-        if href:
-            # Call the scraping function with the extracted href
-            best_time_info = scrape_best_time_to_visit(place)
-            
-            if best_time_info:
-                return HttpResponse(f"<h1>Best Time to Visit {place}</h1><p>{best_time_info}</p>")
-            else:
-                return HttpResponse(f"No data available for {place}")
-        else:
-            return HttpResponse("Invalid destination href.")
-    return HttpResponse("Invalid request method.")
 
 def details(request, href):
     places = scrape_places()  # Fetch the scraped data
@@ -171,6 +152,14 @@ def details(request, href):
         })
     else:
         return render(request, '404.html', status=404)
+def best_time(request, place):
+    """Fetch the best time to visit a destination."""
+    base_url = 'https://www.lonelyplanet.com'
+    destination_url = f'{base_url}/{place.replace(" ", "-").lower()}'
+    best_time_details = extract_best_time_to_visit(destination_url)
+    
+    if request.method == 'POST':
+        return render(request, 'best_time.html', {'place': place, 'best_time_details': best_time_details})
 
 def scrape_attractions(place):
     base_url = 'https://www.lonelyplanet.com'
