@@ -21,9 +21,12 @@ urlpatterns = [
     path('places/', views.display_places, name='places'), 
     path('details/<path:href>/', views.details, name='details'),  # Use <path:href> to allow slashes
     path('country/<path:href>/', views.country_details, name='country_details'),  # Use <path:href> to allow slashes
+    path('region/<path:href>/', views.region_details, name='region_details'),  # Use <path:href> to allow slashes
     path('continent/<path:href>/', views.continent_details, name='continent_details'),  # Use <path:href> to allow slashes
     path('best_time/<str:place>/', views.best_time, name='best_time'),  # The 'place' should be the destination_name
+    path('attraction/<str:country>/<str:place>/', views.attraction, name='attraction'),  # The 'place' should be the destination_name
     path('fetch-tripadvisor/<str:place>/', views.fetch_restaurants, name='fetch_tripadvisor'),
+    path('weather/<str:city_name>/', views.get_weather, name='get_weather'),
     path('search_hotels/', views.search_hotels, name='search_hotels'),
 
 ]

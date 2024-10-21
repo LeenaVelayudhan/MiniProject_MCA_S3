@@ -1,0 +1,21 @@
+{% load static %}
+{% if attraction_details %}
+    <div class="attraction-container">
+        <h1>Attractions in {{ place }}</h1>
+
+        <ul>
+            {% for attraction in attraction_details %}
+            <div class="attraction">
+                <h3>{{ attraction.attraction_name }}</h3>
+                <img src="{{ attraction.image }}" alt="{{ attraction.name }}">
+                <p>{{ place }}</p>
+                <p>{{ attraction.description }}</p>
+            </div>
+        {% endfor %}
+        
+        </ul>
+    </div>
+{% else %}
+    <p>No attractions found for this location.</p>
+
+{% endif %}
