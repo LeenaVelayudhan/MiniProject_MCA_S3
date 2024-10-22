@@ -1,17 +1,171 @@
 {% load static %}
+{% include 'loader.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Information</title>
+    <title>{{ place.destination_name }} - Details</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/loader.css' %}">  
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slider.css' %}">
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-1.1.1.js' %}"></script>
+    <script src="{% static 'js/superfish.js' %}"></script>
+    <script src="{% static 'js/sForm.js' %}"></script>
+    <script src="{% static 'js/jquery.jqtransform.js' %}"></script>
+    <script src="{% static 'js/jquery.equalheights.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static 'js/tms-0.4.1.js' %}"></script>
+    <script src="{% static 'js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+    <script src="{% static 'js/jquery.ui.totop.js' %}"></script>
+
+    <script>
+        $(window).on('load', function () {
+            $('#loader').fadeOut();  // Hide loader when the page is fully loaded
+            $('#content').fadeIn();  // Show the main content
+            fetchWeatherData();  // Fetch weather data on load
+        });
+
+        // Optional: Show the loader when the content is being loaded via AJAX or if needed
+        $(document).on('ajaxStart', function() {
+            $('#loader').fadeIn(); // Show loader when an AJAX request starts
+        }).on('ajaxStop', function() {
+            $('#loader').fadeOut(); // Hide loader when the AJAX request completes
+        });
+
+        function fetchWeatherData() {
+            const apiKey = ' 4f79e218d29206302f949917c6dd5e64'; // Replace with your actual API key
+            const cityName = '{{ place.destination_name }}'; // City name from the Django context
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const temp = data.main.temp; // Current temperature
+                    const weatherDescription = data.weather[0].description; // Weather description
+                    displayWeather(temp, weatherDescription);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    document.getElementById('weather-info').innerText = 'Weather data not available';
+                });
+        }
+
+        function displayWeather(temp, description) {
+            document.getElementById('weather-info').innerText = `Current Temperature: ${temp} °C, ${description}`;
+        }
+    </script>
+
+    <style>
+        .detail-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .detail-container img {
+            max-width: 100%;
+            height: 100px;
+            margin-top: 20px;
+        }
+        .description {
+            margin-top: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .place-card {
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .image-container {
+            position: relative;
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 5px; /* Space between image and cards */
+        }
+
+        .image-container img {
+            width: 100%; /* Ensure image takes up the full width */
+            height: 350px;
+            margin-top: 20px;
+            border-radius: 8px; /* Optional: Adds rounded corners to the image */
+        }
+        .main h1 {
+            text-align: left;
+            font-weight: 100;
+            color: blue;
+        }
+        .main a {
+            text-decoration: underline;
+        }
+        .weather {
+            margin: 20px 0;
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Weather in {{ weather.city }}</h1>
-    <p>Temperature: {{ weather.temperature }} °C</p>
-    <p>Description: {{ weather.description }}</p>
-    <p>Humidity: {{ weather.humidity }}%</p>
-    <p>Wind Speed: {{ weather.wind_speed }} m/s</p>
-    <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="weather-icon">
+    <div id="content" style="display:none;">
+        <header>
+            <div class="container_12">
+                <div class="grid_12">
+                    <h1><a href="home.html"><img src="{% static 'images/logo.png' %}" alt=""></a></h1>
+                    <div class="clear"></div>
+                </div>
+                <div class="menu_block">
+                    <nav>
+                        <ul class="sf-menu">
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li class="current"><a href="{% url 'places' %}">Destinations</a></li>
+                            <li><a href="{% url 'language_translation' %}">Translation</a></li>
+                            <li><a href="{% url 'search' %}">Search</a></li>  
+                        </ul>
+                    </nav>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </header>
+        
+        <div class="main">
+            <div class="cardm">
+                <div class="card">
+                    <svg class="weather" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 100 100" xml:space="preserve">
+                        <image id="image0" width="100" height="100" href="data:image/png;base64,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"/>
+                    </svg>
+                    <div class="description">
+                        <h2>{{ place.destination_name }}</h2>
+                        <p class="weather" id="weather-info">Fetching weather data...</p>
+                        <div class="image-container">
+                            <img src="{{ place.image.url }}" alt="{{ place.destination_name }}">
+                        </div>
+                        <p>{{ place.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="container_12">
+                <div class="grid_12">
+                    <div class="copy">© {{ current_year }} Your Company. All rights reserved.</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+        </div>
+    </div>
 </body>
 </html>

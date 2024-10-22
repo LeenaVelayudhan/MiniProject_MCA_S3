@@ -124,7 +124,11 @@
                   <li><a href="{% url 'Weather' %}">Weather</a></li>
                   <li class="current"><a href="{% url 'places' %}">Destinations</a></li>
                   <li><a href="{% url 'language_translation' %}">Translation</a></li>
-                  <li><a href="{% url 'search' %}">Search</a></li>  
+                  <li>
+                    <form method="GET" action="{% url 'places' %}">
+                      <input type="text" name="search" value="{{ search_query }}" placeholder="Search by country or city">
+                      <button type="submit">Search</button>
+                  </form></li>  
                 </ul>
               </nav>
               <div class="clear"></div>
@@ -179,8 +183,7 @@
 <footer>
     <div class="container_12">
       <div class="grid_12">
-        <div class="socials"> <a href="#"></a> <a href="#"></a> <a href="#"></a> <a href="#"></a> </div>
-        <div class="copy"> Journey &copy; 2045 | <a href="#">Privacy Policy</a> | Design by: <a href="http://www.templatemonster.com/">TemplateMonster.com</a> </div>
+        <div class="copy"> ExploreConnect &copy; 2024  </div>
       </div>
       <div class="clear"></div>
     </div>

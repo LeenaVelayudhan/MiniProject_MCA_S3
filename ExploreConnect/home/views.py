@@ -22,7 +22,29 @@ from bs4 import BeautifulSoup
 from .models import Destination, BestTimeToVisit, Attraction
 @csrf_exempt
 
+def destination_list(request):
+    # Fetch all destinations from the database
+    destinations = Destination.objects.all()
 
+    # Pass the destinations to the template
+    return render(request, 'destination_list.html', {'destinations': destinations})
+
+# Display details of a specific destination
+def destination_detail(request, destination_id):
+    # Fetch the specific destination by ID
+    destination = get_object_or_404(Destination, id=destination_id)
+
+    # Fetch related data (best time to visit and attractions)
+    best_time_to_visit = get_object_or_404(BestTimeToVisit, destination=destination)
+    attractions = Attraction.objects.filter(destination=destination)
+
+    # Pass the data to the template
+    context = {
+        'destination': destination,
+        'best_time_to_visit': best_time_to_visit,
+        'attractions': attractions
+    }
+    return render(request, 'destination_detail.html', context)
 def get_weather(request, city_name):
     api_key = ' 4f79e218d29206302f949917c6dd5e64'
     base_url = 'http://api.openweathermap.org/data/2.5/weather'
@@ -133,6 +155,9 @@ def details(request, country, city):
         'attractions': attractions,
         'best_time_info': best_time_info,  # Pass the scraped info to the template
     })
+
+
+from home.models import *
 
 def display_places(request):
     # Get all places (scraped data or from the database)
@@ -301,10 +326,8 @@ def translate_audio(request):
             audio_filename = f"{uuid.uuid4()}.mp3"
             audio_filepath = os.path.join(settings.MEDIA_ROOT, audio_filename)
             tts.save(audio_filepath)
-            print(f"Audio_path: {audio_filepath}")
 
             return JsonResponse({
-                
                 'translated_text': translated_text,
                 'audio_path': f'/media/{audio_filename}'
             })
@@ -314,4 +337,3 @@ def translate_audio(request):
             return JsonResponse({'error': str(e)}, status=500)
 
         return JsonResponse({'error': 'Invalid request method'}, status=405)
-

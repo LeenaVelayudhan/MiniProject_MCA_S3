@@ -237,7 +237,7 @@ def scrape_places():
     all_results = []
     seen_destinations = set()
 
-    for page_number in range(1, 101):  # Adjust range as needed
+    for page_number in range(1, 2):  # Adjust range as needed
         url = f'{base_url}/places?type=City&sort=DESC&page={page_number}' 
         response = requests.get(url)
 
