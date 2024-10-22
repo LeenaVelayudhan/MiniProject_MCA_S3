@@ -1,6 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import os
+import django
+
+# Set up Django settings module to match your project settings
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ExploreConnect.settings')  # Use the actual name of your settings module
+django.setup()
+
+from home.models import Destination, BestTimeToVisit, Attraction  # Replace 'myapp' with the name of your Django app
 
 def fetch_soup(url):
     """Fetch the content of the URL and return a BeautifulSoup object."""
@@ -229,7 +237,7 @@ def scrape_places():
     all_results = []
     seen_destinations = set()
 
-    for page_number in range(3, 4):  # Adjust range as needed
+    for page_number in range(1, 101):  # Adjust range as needed
         url = f'{base_url}/places?type=City&sort=DESC&page={page_number}' 
         response = requests.get(url)
 
@@ -297,8 +305,36 @@ def scrape_places():
                                 },  # Include structured best time to visit details
                                 'attractions': attractions_list  # Include attractions
                             })
+                        # Save destination
+                            destination = Destination.objects.create(
+                                destination_name=destination_name,
+                                href=href.strip('/'),
+                                destination_description=destination_description,
+                                country_name=country_name,
+                                country_description=country_description,
+                                continent_name=continent_name,
+                                continent_description=continent_description,
+                                image_url=destination_image
+                            )
 
-                            
+                            # Save best time to visit (one-to-one relationship)
+                            BestTimeToVisit.objects.create(
+                                destination=destination,
+                                title=best_time_details['best_time_title'],
+                                header_image=best_time_details['header_image_url'],
+                                intropara=best_time_details['intropara'],
+                                sections=best_time_details['sections']
+                            )
+
+                            # Save attractions (many-to-one relationship)
+                            for attraction in attractions:
+                                Attraction.objects.create(
+                                    destination=destination,
+                                    name=attraction['attraction_name'],
+                                    description=attraction['description']
+                                )
+
+                            print(f"Saved {destination_name} to the database.")
 
                         except Exception as e:
                             print(f"Error processing {destination_name}: {e}")
@@ -309,5 +345,5 @@ def scrape_places():
         # Delay between requests
         time.sleep(1)
 
-    return all_results
-
+    return "Scraping complete!"
+                            

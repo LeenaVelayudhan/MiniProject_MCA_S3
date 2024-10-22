@@ -201,7 +201,7 @@ def attraction(request, place, country):
     country_formatted = country.replace(" ", "-").lower()
     
     # Construct the correct URL for the attractions page
-    attraction_url = f'{base_url}/{place_formatted}/{country_formatted}/attractions'
+    attraction_url = f'{base_url}/{country_formatted}/{place_formatted}/attractions'
     print(f"Constructed URL: {attraction_url}") 
     # Fetch the attraction details
     attraction_details = extract_attractions(attraction_url)
@@ -223,7 +223,7 @@ def country_details(request, href):
 
     if place:
         # Fetch attractions related to the place
-        attractions = scrape_attractions(place['href'])
+        attractions = extract_attractions(place['href'])
 
         # Pass both place and its attractions to the template
         return render(request, 'country_details.html', {

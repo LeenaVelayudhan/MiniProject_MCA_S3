@@ -5,9 +5,8 @@ from django.conf.urls.static import static
 from .views import display_places
 
 
-urlpatterns = [
-   # path('', views.home, name='home'),  
-    path('', views.home, name='home'),
+urlpatterns = [ 
+    path('home', views.home, name='home'),
     path('profile/', views.profile, name='profile'),
     path('weather/', views.Weather, name='Weather'),
     path('explore/', views.Explore, name='Explore'),

@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        fetch('/language_translation/translate_audio/', {
+        fetch('language_translation/translate_audio/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
