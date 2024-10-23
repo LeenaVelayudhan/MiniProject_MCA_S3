@@ -5,8 +5,9 @@ from django.conf.urls.static import static
 from .views import display_places
 
 
-urlpatterns = [ 
-    path('home', views.home, name='home'),
+urlpatterns = [
+   # path('', views.home, name='home'),  
+    path('', views.home, name='home'),
     path('profile/', views.profile, name='profile'),
     path('weather/', views.Weather, name='Weather'),
     path('explore/', views.Explore, name='Explore'),
@@ -15,19 +16,18 @@ urlpatterns = [
     path('thingstodo/', views.ThingstoDo, name='ThingstoDo'),  # Ensure this is correct
     path('restaurants/', views.Restaurants, name='Restaurants'),
     path('language_translation/', views.language_translation, name='language_translation'),
-    path('destinations/', views.destination_list, name='destination_list'),
-    path('destinations/<int:destination_id>/', views.destination_detail, name='destination_detail'),
     path('logout/', views.logout_view, name='logout'),
     path('language_translation/translate_audio/', views.translate_audio, name='translate_audio'),
-    path('places/', views.display_places, name='places'), 
+    path('places/', views.display_places, name='places'),
+    path('city/', views.display, name='city'), 
     path('details/<path:href>/', views.details, name='details'),  # Use <path:href> to allow slashes
-    path('country/<path:href>/', views.country_details, name='country_details'),  # Use <path:href> to allow slashes
+    path('country/<str:place>/', views.country_details, name='country_details'),  # Use <path:href> to allow slashes
     path('region/<path:href>/', views.region_details, name='region_details'),  # Use <path:href> to allow slashes
     path('continent/<path:href>/', views.continent_details, name='continent_details'),  # Use <path:href> to allow slashes
     path('best_time/<str:place>/', views.best_time, name='best_time'),  # The 'place' should be the destination_name
-    path('attraction/<str:country>/<str:place>/', views.attraction, name='attraction'),  # The 'place' should be the destination_name
+    # path('attraction/<str:country>/<str:place>/', views.attraction, name='attraction'),  # The 'place' should be the destination_name
     path('fetch-tripadvisor/<str:place>/', views.fetch_restaurants, name='fetch_tripadvisor'),
-    path('weather/<str:city_name>/', views.get_weather, name='get_weather'),
+    # path('weather/<str:city_name>/', views.get_weather, name='get_weather'),
     path('search_hotels/', views.search_hotels, name='search_hotels'),
 
 ]

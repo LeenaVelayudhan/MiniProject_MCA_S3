@@ -133,7 +133,9 @@ LOGOUT_REDIRECT_URL = 'login'  # Name of the URL pattern for your login view
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+import os
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 STATICFILES_DIRS = [ 
     BASE_DIR/ "static"
     ]

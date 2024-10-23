@@ -161,9 +161,11 @@
     {% for place in places %}
     <div class="place-card">
       <a href="{% url 'details' place.href %}">
-        <img src="{{ place.image_url }}" alt="{{ place.destination_name }}" onerror="this.src='default-image.jpg';">
+        <img src="{{ place.image_url }}" alt="{{ place.destination_name }}" onerror="this.src='default.pn';">
+        
+
         <div>
-          <a href="{% url 'country_details' place.href %}" class="country-link">{{ place.country_name }}</a>
+          <a href="{% url 'city' %}" class="country-link">{{ place.country_name }}</a>
         </div>
       </a>
       <h3>{{ place.destination_name }}</h3>

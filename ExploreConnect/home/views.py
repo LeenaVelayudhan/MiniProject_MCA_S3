@@ -15,62 +15,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.conf import settings
-from .home import scrape_places, extract_best_time_to_visit,extract_attractions # Import the scraping function
+from .home import scrape_places, extract_best_time_to_visit # Import the scraping function
 from django.shortcuts import render
 import requests
 from bs4 import BeautifulSoup
-from .models import Destination, BestTimeToVisit, Attraction
+
 @csrf_exempt
-
-def destination_list(request):
-    # Fetch all destinations from the database
-    destinations = Destination.objects.all()
-
-    # Pass the destinations to the template
-    return render(request, 'destination_list.html', {'destinations': destinations})
-
-# Display details of a specific destination
-def destination_detail(request, destination_id):
-    # Fetch the specific destination by ID
-    destination = get_object_or_404(Destination, id=destination_id)
-
-    # Fetch related data (best time to visit and attractions)
-    best_time_to_visit = get_object_or_404(BestTimeToVisit, destination=destination)
-    attractions = Attraction.objects.filter(destination=destination)
-
-    # Pass the data to the template
-    context = {
-        'destination': destination,
-        'best_time_to_visit': best_time_to_visit,
-        'attractions': attractions
-    }
-    return render(request, 'destination_detail.html', context)
-def get_weather(request, city_name):
-    api_key = ' 4f79e218d29206302f949917c6dd5e64'
-    base_url = 'http://api.openweathermap.org/data/2.5/weather'
-    
-    params = {
-        'q': city_name,
-        'appid': api_key ,
-        'units': 'metric'  # You can change to 'imperial' for Fahrenheit
-    }
-    
-    response = requests.get(base_url, params=params)
-    data = response.json()
-    
-    if response.status_code == 200:
-        weather_data = {
-            'city': data['name'],
-            'temperature': data['main']['temp'],
-            'description': data['weather'][0]['description'],
-            'icon': data['weather'][0]['icon'],
-            'wind_speed': data['wind']['speed'],
-            'humidity': data['main']['humidity']
-        }
-        return render(request, 'place_list.html', {'weather': weather_data})
-    else:
-        return JsonResponse({'error': 'City not found'}, status=404)
-
 def search_hotels(request):
     if request.method == 'POST':
         query = request.POST.get('query')
@@ -156,9 +106,6 @@ def details(request, country, city):
         'best_time_info': best_time_info,  # Pass the scraped info to the template
     })
 
-
-from home.models import *
-
 def display_places(request):
     # Get all places (scraped data or from the database)
     places = scrape_places()  # Fetch the scraped data or use your database if necessary
@@ -174,11 +121,6 @@ def display_places(request):
             place for place in places 
             if search_query in place.get('country_name', '').lower() or search_query in place.get('destination_name', '').lower() or search_query in place.get('continent_name', '').lower()
         ]
-        for place in places:
-            if 'href' not in place:
-                print(f"Missing 'href' for place: {place}")
-            else:
-                print(place.get('href')) # Ensure 'href' exists in each place
 
         print(f"Filtered Places: {filtered_places}")  # Debugging
 
@@ -194,6 +136,20 @@ def display_places(request):
         
     })
 
+def display(request):
+    # Get all places (scraped data or from the database)
+    places = scrape_places()  # Fetch the scraped data or use your database if necessary
+
+    
+    # Sort places alphabetically by destination name (optional)
+    #places = sorted(places, key=lambda x: x['destination_name'].lower())
+
+    # Render the template with filtered places
+    return render(request, 'places.html', {
+        'places': places, # Pass the search query back to the template
+        
+    })
+
 
 def details(request, href):
     places = scrape_places()  # Fetch the scraped data
@@ -201,7 +157,7 @@ def details(request, href):
 
     if place:
         # Fetch attractions related to the place
-        attractions = extract_attractions(place['href'])
+        attractions = scrape_attractions(place['href'])
 
         # Pass both place and attractions to the template
         return render(request, 'places_list.html', {
@@ -218,28 +174,46 @@ def best_time(request, place):
     
     if request.method == 'POST':
         return render(request, 'best_time.html', {'place': place, 'best_time_details': best_time_details})
-def attraction(request, place, country):
+
+def scrape_attractions(place):
     base_url = 'https://www.lonelyplanet.com'
-    
-    # Properly format the place and country for the URL
-    place_formatted = place.replace(" ", "-").lower()
-    country_formatted = country.replace(" ", "-").lower()
-    
-    # Construct the correct URL for the attractions page
-    attraction_url = f'{base_url}/{country_formatted}/{place_formatted}/attractions'
-    print(f"Constructed URL: {attraction_url}") 
-    # Fetch the attraction details
-    attraction_details = extract_attractions(attraction_url)
+    attractions_url = f'{base_url}/{place}/attractions'  # Modify according to actual URL structure
+    attractions = []
 
-    # Debugging: Check the constructed URL and the fetched data
-    print(f"Fetching attractions from URL: {attraction_url}")
-    print(f"Attractions details: {attraction_details}")
+    response = requests.get(attractions_url)
 
-    # Render the template with the place and attraction details
-    return render(request, 'attraction.html', {'place': place, 'attraction_details': attraction_details})
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        attraction_articles = soup.find_all('article', class_='actual-attraction-class-name')  # Replace with actual class name
 
+        for article in attraction_articles:
+            # Extract attraction name
+            name_tag = article.find('h3', class_='actual-attraction-name-class')  # Replace with actual class name
+            attraction_name = name_tag.text.strip() if name_tag else 'No name found'
 
-def country_details(request, href):
+            # Extract image URL
+            img_tag = article.find('img')
+            image_url = img_tag['src'] if img_tag and 'src' in img_tag.attrs else 'No image found'
+
+            # Extract additional details (e.g., description, rating, etc.)
+            description_tag = article.find('p', class_='actual-attraction-description-class')  # Replace with actual class name
+            attraction_description = description_tag.text.strip() if description_tag else 'No description found'
+            # Extract the destination name from the href
+            
+
+            # Append the attraction data to the list
+            attractions.append({
+                'attraction_name': attraction_name,
+                'image_url': image_url,
+                'description': attraction_description,
+            })
+
+    else:
+        print(f"Failed to fetch attractions: Status code {response.status_code}")
+
+    return attractions
+
+def country_details(request,place):
     # Fetch the scraped data for places (countries or destinations)
     places = scrape_places()
     
@@ -258,14 +232,7 @@ def country_details(request, href):
     else:
         return render(request, '404.html', status=404)
 
-def region_details(request, href):
-    places = scrape_places()  # Fetch the scraped data
-    place = next((p for p in places if p['href'] == href), None)
-    
-    if place:
-        return render(request, 'region_details.html', {'place': place})
-    else:
-        return render(request, '404.html', status=404)
+
 def continent_details(request, href):
     places = scrape_places()  # Fetch the scraped data
     place = next((p for p in places if p['href'] == href), None)
@@ -275,6 +242,15 @@ def continent_details(request, href):
     else:
         return render(request, '404.html', status=404)
 
+
+def region_details(request, href):
+    places = scrape_places()  # Fetch the scraped data
+    place = next((p for p in places if p['href'] == href), None)
+    
+    if place:
+        return render(request, 'region_details.html', {'place': place})
+    else:
+        return render(request, '404.html', status=404)
 
 def Weather(request):
     return render(request, 'Weather.html')
@@ -291,10 +267,7 @@ def search(request):
 
 
 def home(request):
-
-    destinations = Destination.objects.all()  # Replace this with your actual query
-    return render(request, 'home.html', {'destinations': destinations})
-
+    return render(request,'home.html')
 def language_translation(request):
     return render(request, 'language_translation.html')
 
@@ -326,8 +299,10 @@ def translate_audio(request):
             audio_filename = f"{uuid.uuid4()}.mp3"
             audio_filepath = os.path.join(settings.MEDIA_ROOT, audio_filename)
             tts.save(audio_filepath)
+            print(f"Audio_path: {audio_filepath}")
 
             return JsonResponse({
+                
                 'translated_text': translated_text,
                 'audio_path': f'/media/{audio_filename}'
             })
@@ -337,3 +312,4 @@ def translate_audio(request):
             return JsonResponse({'error': str(e)}, status=500)
 
         return JsonResponse({'error': 'Invalid request method'}, status=405)
+
